@@ -1,0 +1,76 @@
+
+package repository;
+
+import org.neo4j.driver.*;
+
+import java.util.List;
+import java.util.Map;
+
+public class GraphBuilder {
+    private final Driver driver;
+
+    public GraphBuilder(Driver driver) {
+        this.driver = driver;
+    }
+
+    public void insertAirRouteBatch(List<Map<String, Object>> routes) {
+        if (routes == null || routes.isEmpty()) {
+            System.out.println("   ⚠️ No hay rutas para insertar.");
+            return;
+        }
+
+        System.out.println("   ✍️ Insertando " + routes.size() + " rutas en Neo4j...");
+        try (Session session = driver.session()) {
+            session.writeTransaction(tx -> {
+                tx.run(
+                        "UNWIND $routes AS r " +
+                                "MERGE (a:Aerolinea {nombre: r.aerolinea}) " +
+                                "MERGE (o:Aeropuerto {codigo: r.origen}) " +
+                                "MERGE (d:Aeropuerto {codigo: r.destino}) " +
+                                "MERGE (v:Vuelo {codigo: r.codigoVuelo}) " +
+                                "ON CREATE SET v.precio = r.precio, v.duracion = r.duracionMinutos, " +
+                                "              v.timestamp = r.timestamp, v.createdAt = datetime() " +
+                                "ON MATCH  SET v.precio = r.precio, v.duracion = r.duracionMinutos, " +
+                                "              v.timestamp = r.timestamp, v.updatedAt = datetime() " +
+                                "MERGE (a)-[:OPERA]->(v) " +
+                                "MERGE (o)-[:ORIGEN]->(v) " +
+                                "MERGE (v)-[:DESTINO]->(d)",
+                        Map.of("routes", routes)
+                );
+                return null;
+            });
+            System.out.println("   ✔ Inserción completada");
+        } catch (Exception e) {
+            System.out.println("   ❌ Error insertando rutas: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void clearAirRoutes() {
+        System.out.println("   🧹 Borrando todo el grafo (Datamart)...");
+        try (Session session = driver.session()) {
+            session.writeTransaction(tx -> {
+                tx.run("MATCH (n) DETACH DELETE n");
+                return null;
+            });
+            System.out.println("   ✔ Borrado completado");
+        }
+    }
+
+    public void ensureIndexesAndConstraints() {
+        System.out.println("   🗂️  Creando constraints e índices si no existen...");
+        try (Session session = driver.session()) {
+            session.executeWrite(tx -> {
+                tx.run("CREATE CONSTRAINT v_codigo_unique IF NOT EXISTS FOR (v:Vuelo) REQUIRE v.codigo IS UNIQUE");
+                tx.run("CREATE INDEX a_nombre_idx IF NOT EXISTS FOR (a:Aerolinea) ON (a.nombre)");
+                tx.run("CREATE INDEX ap_codigo_idx IF NOT EXISTS FOR (ap:Aeropuerto) ON (ap.codigo)");
+                return null;
+            });
+            System.out.println("   ✔ Constraints/índices OK");
+        } catch (Exception e) {
+            System.err.println("   ❌ Error en ensureIndexesAndConstraints: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,19 @@
+
+version: '3.8'
+services:
+  neo4j:
+    image: neo4j:5.14
+    container_name: neo4j-airroutes
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: "neo4j/Jorge_2004"
+      NEO4J_dbms_security_auth__enabled: "true"
+      NEO4J_dbms_default__listen__address: "0.0.0.0"
+      NEO4J_dbms_connector_bolt_listen__address: ":7687"
+      NEO4J_dbms_connector_http_listen__address: ":7474"
+    volumes:
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+      - ./neo4j/import:/var/lib/neo4j/import
