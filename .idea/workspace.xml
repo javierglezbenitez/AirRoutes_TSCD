@@ -4,36 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="Datalek limpio y funcionando, datamart solo funcionado">
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartOrchestrator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/EC2Provisioner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/InstanceProvisioner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/config/Neo4jClientFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/config/Neo4jClientProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/DatalakeReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReaderImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/RemoteExecutor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/SSHRemoteExecutor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/GraphRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/service/DataMartService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/service/DataMartServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/Neo4jReadinessProbe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/ReadinessProbe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/ScriptDeployer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/ScriptDeployerImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/SetupScriptRepository.java" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="Datalek limpio y funcionando, datamart limpio y  funcionado">
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/InstanceAccess.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/Neo4jClientWorkflow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/Neo4jResources.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/ProvisioningWorkflow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/SetupResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/SshNeo4jSetupWorkflow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/AmiHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/InstanceHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/KeyPairHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/SecurityGroupHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/support/SshIO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/support/SshSessionFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/MainDatamart.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/MainDatamart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/aws/EC2Manager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/aws/SSHConnector.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/config/Neo4jConnector.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/repository/GraphBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/service/DataMartUpdater.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/variables.env" beforeDir="false" afterPath="$PROJECT_DIR$/variables.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartOrchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/aws/EC2Provisioner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/EC2Provisioner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/remote/SSHRemoteExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/SSHRemoteExecutor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +32,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Record" />
         <option value="Class" />
       </list>
     </option>
@@ -225,6 +214,9 @@
       <workItem from="1765299772283" duration="2895000" />
       <workItem from="1765305382289" duration="4446000" />
       <workItem from="1765374767316" duration="3520000" />
+      <workItem from="1765387446402" duration="695000" />
+      <workItem from="1765394220873" duration="23000" />
+      <workItem from="1765403959280" duration="1760000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -234,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765288466335</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Datalek limpio y funcionando, datamart limpio y  funcionado">
+      <option name="closed" value="true" />
+      <created>1765387483021</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1765387483021</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +253,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Datalek limpio y funcionando, datamart solo funcionado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Datalek limpio y funcionando, datamart solo funcionado" />
+    <MESSAGE value="Datalek limpio y funcionando, datamart limpio y  funcionado" />
+    <option name="LAST_COMMIT_MESSAGE" value="Datalek limpio y funcionando, datamart limpio y  funcionado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
