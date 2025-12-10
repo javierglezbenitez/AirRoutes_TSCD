@@ -6,19 +6,17 @@ import org.neo4j.driver.*;
 import java.util.List;
 import java.util.Map;
 
-public class GraphBuilder {
+public class Neo4jGraphRepository implements GraphRepository {
     private final Driver driver;
 
-    public GraphBuilder(Driver driver) {
-        this.driver = driver;
-    }
+    public Neo4jGraphRepository(Driver driver) { this.driver = driver; }
 
+    @Override
     public void insertAirRouteBatch(List<Map<String, Object>> routes) {
         if (routes == null || routes.isEmpty()) {
             System.out.println("   ⚠️ No hay rutas para insertar.");
             return;
         }
-
         System.out.println("   ✍️ Insertando " + routes.size() + " rutas en Neo4j...");
         try (Session session = driver.session()) {
             session.writeTransaction(tx -> {
@@ -42,23 +40,21 @@ public class GraphBuilder {
             System.out.println("   ✔ Inserción completada");
         } catch (Exception e) {
             System.out.println("   ❌ Error insertando rutas: " + e.getMessage());
-            e.printStackTrace();
             throw e;
         }
     }
 
-    public void clearAirRoutes() {
+    @Override
+    public void clearAll() {
         System.out.println("   🧹 Borrando todo el grafo (Datamart)...");
         try (Session session = driver.session()) {
-            session.writeTransaction(tx -> {
-                tx.run("MATCH (n) DETACH DELETE n");
-                return null;
-            });
+            session.writeTransaction(tx -> { tx.run("MATCH (n) DETACH DELETE n"); return null; });
             System.out.println("   ✔ Borrado completado");
         }
     }
 
-    public void ensureIndexesAndConstraints() {
+    @Override
+    public void ensureSchema() {
         System.out.println("   🗂️  Creando constraints e índices si no existen...");
         try (Session session = driver.session()) {
             session.executeWrite(tx -> {
@@ -69,8 +65,7 @@ public class GraphBuilder {
             });
             System.out.println("   ✔ Constraints/índices OK");
         } catch (Exception e) {
-            System.err.println("   ❌ Error en ensureIndexesAndConstraints: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("   ❌ Error en ensureSchema: " + e.getMessage());
         }
     }
 }

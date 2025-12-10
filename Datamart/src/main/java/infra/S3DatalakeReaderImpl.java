@@ -10,15 +10,13 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 
-public class S3DatalakeReader {
+public class S3DatalakeReaderImpl implements DatalakeReader {
     private final S3Client s3;
     private final String bucket;
 
-    public S3DatalakeReader(S3Client s3, String bucket) {
-        this.s3 = s3;
-        this.bucket = bucket;
-    }
+    public S3DatalakeReaderImpl(S3Client s3, String bucket) { this.s3 = s3; this.bucket = bucket; }
 
+    @Override
     public List<String> listFilesForDate(LocalDate date) {
         String prefix = "datalake/" + date + "/";
         System.out.println("   🔎 Prefijo S3: " + prefix);
@@ -26,19 +24,14 @@ public class S3DatalakeReader {
 
         String token = null;
         do {
-            ListObjectsV2Request.Builder req = ListObjectsV2Request.builder()
-                    .bucket(bucket)
-                    .prefix(prefix);
+            ListObjectsV2Request.Builder req = ListObjectsV2Request.builder().bucket(bucket).prefix(prefix);
             if (token != null && !token.isEmpty()) {
                 req.continuationToken(token);
                 System.out.println("   ⏭️  ContinuationToken: " + token);
             }
             ListObjectsV2Response resp = s3.listObjectsV2(req.build());
-
             for (S3Object obj : resp.contents()) {
-                if (obj.key().endsWith(".json")) {
-                    keys.add(obj.key());
-                }
+                if (obj.key().endsWith(".json")) { keys.add(obj.key()); }
             }
             token = resp.nextContinuationToken();
         } while (token != null && !token.isEmpty());
@@ -46,37 +39,22 @@ public class S3DatalakeReader {
         return keys;
     }
 
-    public List<Map<String, Object>> readFilesForDate(LocalDate date) throws Exception {
-        List<String> keys = listFilesForDate(date);
-        return readSpecificKeys(keys);
-    }
-
+    @Override
     public List<Map<String, Object>> readSpecificKeys(List<String> keys) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         List<Map<String, Object>> routes = new ArrayList<>();
-
         for (String key : keys) {
             System.out.println("   ⬇️  Descargando: s3://" + bucket + "/" + key);
-            try (InputStream is = s3.getObject(GetObjectRequest.builder()
-                    .bucket(bucket).key(key).build())) {
-
+            try (InputStream is = s3.getObject(GetObjectRequest.builder().bucket(bucket).key(key).build())) {
                 JsonNode root = mapper.readTree(is);
-
-                if (!root.isArray()) {
-                    System.out.println("   ⚠️  El JSON no es array. Intentaré leer un campo 'routes'...");
-                }
-
                 JsonNode arr = root.isArray() ? root : root.path("routes");
                 if (!arr.isArray()) {
-                    System.out.println("   ❌ No es posible iterar: ni array ni 'routes' array. Omito " + key);
+                    System.out.println("   ❌ JSON inválido (no es array ni 'routes'). Omito " + key);
                     continue;
                 }
-
-                int countBefore = routes.size();
-                for (JsonNode node : arr) {
-                    routes.add(mapRoute(node));
-                }
-                int added = routes.size() - countBefore;
+                int before = routes.size();
+                for (JsonNode node : arr) { routes.add(mapRoute(node)); }
+                int added = routes.size() - before;
                 System.out.println("   ✔ Parseadas " + added + " rutas de " + key);
             }
         }

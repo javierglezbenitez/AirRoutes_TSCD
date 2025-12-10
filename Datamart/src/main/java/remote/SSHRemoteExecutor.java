@@ -1,15 +1,22 @@
-package  aws;
+
+package remote;
 
 import com.jcraft.jsch.*;
 
-public class SSHConnector {
+import java.io.InputStream;
 
+public class SSHRemoteExecutor implements RemoteExecutor {
+
+    @Override
     public void waitForSSH(String host, String user, String pemPath, long timeoutMs) throws InterruptedException {
         long start = System.currentTimeMillis();
         System.out.printf("🔐 Probando SSH %s@%s ... (timeout %d ms)%n", user, host, timeoutMs);
         while (true) {
             try {
                 JSch jsch = new JSch();
+                if (pemPath == null || pemPath.isBlank()) {
+                    throw new IllegalArgumentException("pemPath vacío: necesitas EC2_KEY_PATH apuntando al .pem local.");
+                }
                 jsch.addIdentity(pemPath);
                 Session session = jsch.getSession(user, host, 22);
                 session.setConfig("StrictHostKeyChecking", "no");
@@ -19,16 +26,19 @@ public class SSHConnector {
                 break;
             } catch (JSchException e) {
                 long elapsed = System.currentTimeMillis() - start;
-                System.out.println("   ⏳ SSH no disponible aún (elapsed " + elapsed + " ms). Reintentando en 5s...");
+                System.out.println("   ⏳ SSH no disponible aún (elapsed " + elapsed + " ms). Error: " + e.getMessage());
                 if (elapsed > timeoutMs) {
                     throw new RuntimeException("❌ SSH no disponible después de " + timeoutMs + "ms", e);
                 }
                 Thread.sleep(5000);
+            } catch (IllegalArgumentException e) {
+                throw e; // Falla inmediata si pemPath está vacío
             }
         }
     }
 
-    public String runCommand(String host, String user, String pemPath, String command) throws Exception {
+    @Override
+    public String run(String host, String user, String pemPath, String command) throws Exception {
         System.out.printf("💻 Ejecutando remoto [%s@%s]: %s%n", user, host, command);
         JSch jsch = new JSch();
         jsch.addIdentity(pemPath);
@@ -62,7 +72,8 @@ public class SSHConnector {
         return output.toString();
     }
 
-    public void uploadStream(String host, String user, String pemPath, java.io.InputStream data, String remotePath) throws Exception {
+    @Override
+    public void upload(String host, String user, String pemPath, InputStream data, String remotePath) throws Exception {
         System.out.printf("📤 SFTP upload (stream) -> %s@%s:%s%n", user, host, remotePath);
         JSch jsch = new JSch();
         jsch.addIdentity(pemPath);

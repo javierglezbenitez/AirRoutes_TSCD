@@ -1,27 +1,27 @@
 
 package service;
 
-import repository.GraphBuilder;
+import repository.GraphRepository;
 
 import java.util.List;
 import java.util.Map;
 
-public class DataMartUpdater {
-    private final GraphBuilder graphBuilder;
+public class DataMartServiceImpl implements DataMartService {
+    private final GraphRepository repo;
 
-    public DataMartUpdater(GraphBuilder graphBuilder) {
-        this.graphBuilder = graphBuilder;
-    }
+    public DataMartServiceImpl(GraphRepository repo) { this.repo = repo; }
 
-    public void updateToday(List<Map<String, Object>> routes) {
+    @Override
+    public void upsertToday(List<Map<String, Object>> routes) {
         System.out.println("   🔄 Actualizando DataMart de HOY en Neo4j...");
-        graphBuilder.insertAirRouteBatch(routes);
+        repo.insertAirRouteBatch(routes);
         System.out.println("   ✅ DataMart de HOY actualizado (" + routes.size() + " rutas)");
     }
 
-    public void clearOldRoutes() {
+    @Override
+    public void clearOld() {
         System.out.println("   🧽 Limpiando rutas antiguas del DataMart...");
-        graphBuilder.clearAirRoutes();
+        repo.clearAll();
         System.out.println("   🧹 Rutas antiguas eliminadas de Neo4j");
     }
 }
