@@ -64,8 +64,6 @@ public class S3WebService implements Storage {
             s3.putObject(request,
                     software.amazon.awssdk.core.sync.RequestBody.fromInputStream(inputStream, json.length()));
 
-            System.out.println("☁️ AirRoute subida a S3: " + key);
-
         } catch (IOException e) {
             System.err.println("❌ Error al subir AirRoute a S3: " + e.getMessage());
         }

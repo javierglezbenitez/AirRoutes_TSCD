@@ -11,6 +11,7 @@
     <modules>
         <module>Datalake</module>
         <module>Datamart</module>
+        <module>Orchestrator</module>
     </modules>
 
     <properties>
@@ -18,5 +19,14 @@
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

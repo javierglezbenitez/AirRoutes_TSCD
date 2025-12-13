@@ -28,8 +28,8 @@ public class DatalakeRunner implements Runnable {
         while (running) {
             try {
                 List<AirRoute> routes = generator.generate(batchSize);
-                System.out.println(routes.size());
                 datalake.saveAirRoutes(routes);
+                System.out.printf("✅ Se han almacenado %d rutas nuevas en el Datalake%n", routes.size());
                 Thread.sleep(intervalMillis);
             } catch (InterruptedException e) {
                 System.out.println("Hilo interrumpido");
@@ -41,5 +41,7 @@ public class DatalakeRunner implements Runnable {
         }
     }
 
-    public void stop() { running = false; }
+    public void stop() {
+        running = false;
+    }
 }

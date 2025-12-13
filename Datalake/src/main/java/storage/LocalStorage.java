@@ -43,8 +43,6 @@ public class LocalStorage implements Storage {
                     String json = gson.toJson(ar);
                     writer.write(json);
                 }
-
-                System.out.println("💾 AirRoute guardada localmente en: " + filePath);
             }
 
         } catch (IOException e) {
