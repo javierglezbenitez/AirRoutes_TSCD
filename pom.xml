@@ -12,6 +12,7 @@
         <module>Datalake</module>
         <module>Datamart</module>
         <module>Orchestrator</module>
+        <module>Api</module>
     </modules>
 
     <properties>

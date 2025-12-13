@@ -18,7 +18,7 @@ public class DatalakeBootstrap {
      */
     public void start() {
         // Configuración: igual que en tu antiguo MainDatalake
-        String storageMode = System.getenv().getOrDefault("STORAGE_MODE", "S3");
+        String storageMode = System.getenv().getOrDefault("STORAGE_MODE", "LOCAL");
 
         StorageFactory factory = new DefaultStorageFactory();
         Storage storage = factory.createStorage(storageMode);
