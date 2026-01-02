@@ -78,14 +78,6 @@ public class GraphService {
                     LIMIT $k
                 """, nodeLabel, visibleProp);
 
-        // Opción 2 (si quieres solo la red de rutas):
-        // String cypher = String.format("""
-        //     MATCH (n:%s)
-        //     RETURN coalesce(n.%s,'') AS name, COUNT { (n)-[:%s]-() } AS deg
-        //     ORDER BY deg DESC
-        //     LIMIT $k
-        // """, nodeLabel, visibleProp, rel        // """, nodeLabel, visibleProp, relType);
-
         try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
             return session.readTransaction(tx ->
                     tx.run(cypher, Map.of("k", k)).list(r -> Map.of(

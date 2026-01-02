@@ -21,18 +21,32 @@ public class Neo4jGraphRepository implements GraphRepository {
         try (Session session = driver.session()) {
             session.writeTransaction(tx -> {
                 tx.run(
-                        "UNWIND $routes AS r " +
-                                "MERGE (a:Aerolinea {nombre: r.aerolinea}) " +
-                                "MERGE (o:Aeropuerto {codigo: r.origen}) " +
-                                "MERGE (d:Aeropuerto {codigo: r.destino}) " +
-                                "MERGE (v:Vuelo {codigo: r.codigoVuelo}) " +
-                                "ON CREATE SET v.precio = r.precio, v.duracion = r.duracionMinutos, " +
-                                "              v.timestamp = r.timestamp, v.createdAt = datetime() " +
-                                "ON MATCH  SET v.precio = r.precio, v.duracion = r.duracionMinutos, " +
-                                "              v.timestamp = r.timestamp, v.updatedAt = datetime() " +
+                        "UNWIND $routes AS row " +
+                                "MERGE (a:Aerolinea {nombre: row.aerolinea}) " +
+                                "MERGE (o:Aeropuerto {codigo: row.origen}) " +
+                                "MERGE (d:Aeropuerto {codigo: row.destino}) " +
+                                "MERGE (v:Vuelo {codigo: row.codigoVuelo}) " +
+                                "ON CREATE SET v.precio = row.precio, " +
+                                "              v.duracion = row.duracionMinutos, " +
+                                "              v.timestamp = row.timestamp, " +
+                                "              v.createdAt = datetime() " +
+                                "ON MATCH  SET v.precio = row.precio, " +
+                                "              v.duracion = row.duracionMinutos, " +
+                                "              v.timestamp = row.timestamp, " +
+                                "              v.updatedAt = datetime() " +
                                 "MERGE (a)-[:OPERA]->(v) " +
                                 "MERGE (o)-[:ORIGEN]->(v) " +
-                                "MERGE (v)-[:DESTINO]->(d)",
+                                "MERGE (v)-[:DESTINO]->(d) " +
+                                // ⬇️ NUEVO: relación directa entre aeropuertos
+                                "MERGE (o)-[ruta:RUTA]->(d) " +
+                                "ON CREATE SET ruta.createdAt = datetime(), " +
+                                "              ruta.lastPrice = row.precio, " +
+                                "              ruta.lastDuration = row.duracionMinutos, " +
+                                "              ruta.lastSeenAt = row.timestamp " +
+                                "ON MATCH  SET ruta.updatedAt = datetime(), " +
+                                "              ruta.lastPrice = row.precio, " +
+                                "              ruta.lastDuration = row.duracionMinutos, " +
+                                "              ruta.lastSeenAt = row.timestamp ",
                         Map.of("routes", routes)
                 );
                 return null;
@@ -61,6 +75,8 @@ public class Neo4jGraphRepository implements GraphRepository {
                 tx.run("CREATE CONSTRAINT v_codigo_unique IF NOT EXISTS FOR (v:Vuelo) REQUIRE v.codigo IS UNIQUE");
                 tx.run("CREATE INDEX a_nombre_idx IF NOT EXISTS FOR (a:Aerolinea) ON (a.nombre)");
                 tx.run("CREATE INDEX ap_codigo_idx IF NOT EXISTS FOR (ap:Aeropuerto) ON (ap.codigo)");
+                // (Opcional, Neo4j 5): índice sobre propiedades de relaciones RUTA
+                // tx.run("CREATE INDEX ruta_lastSeen_idx IF NOT EXISTS FOR ()-[r:RUTA]-() ON (r.lastSeenAt)");
                 return null;
             });
             System.out.println("   ✔ Constraints/índices OK");

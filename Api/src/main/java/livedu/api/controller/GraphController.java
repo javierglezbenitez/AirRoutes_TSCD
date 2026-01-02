@@ -43,4 +43,5 @@ public class GraphController {
     @GetMapping("/isolated")
     public ResponseEntity<List<String>> isolated() {
         return ResponseEntity.ok(graphService.isolatedNodes());
-    }}
+    }
+}
