@@ -18,7 +18,7 @@ public class DatalakeBootstrap {
      */
     public void start() {
         // Configuración: igual que en tu antiguo MainDatalake
-        String storageMode = System.getenv().getOrDefault("STORAGE_MODE", "LOCAL");
+        String storageMode = System.getenv().getOrDefault("DATALAKE_MODE", "");
 
         StorageFactory factory = new DefaultStorageFactory();
         Storage storage = factory.createStorage(storageMode);
@@ -26,8 +26,8 @@ public class DatalakeBootstrap {
 
         RouteGenerator generator = new RouteGenerator();
 
-        int batchSize = Integer.parseInt(System.getenv().getOrDefault("BATCH_SIZE", "30"));
-        long intervalMillis = Long.parseLong(System.getenv().getOrDefault("INTERVAL_MS", "30000"));
+        int batchSize = Integer.parseInt(String.valueOf(30));
+        long intervalMillis = Long.parseLong(String.valueOf(30000));
 
         // Runner + hilo
         runner = new DatalakeRunner(generator, datalake, batchSize, intervalMillis);

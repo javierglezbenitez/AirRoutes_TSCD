@@ -14,10 +14,10 @@ public class DefaultStorageFactory implements StorageFactory {
     public Storage createStorage(String mode) {
         if ("S3".equalsIgnoreCase(mode)) {
             S3Client s3Client = S3Client.builder()
-                    .region(Region.of(System.getenv().getOrDefault("AWS_REGION", "us-east-1")))
+                    .region(Region.of(System.getenv().getOrDefault("AWS_REGION", "")))
                     .build();
 
-            String bucketName = System.getenv().getOrDefault("S3_BUCKET", "airroutes-datalake");
+            String bucketName = System.getenv().getOrDefault("S3_BUCKET", "");
             return new S3WebService(s3Client, bucketName);
         } else {
             return new LocalStorage("storage");

@@ -20,7 +20,7 @@
 
     <properties>
         <!-- Versiones clave -->
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <spring.boot.version>3.3.4</spring.boot.version>
         <neo4j.driver.version>5.23.0</neo4j.driver.version>
 

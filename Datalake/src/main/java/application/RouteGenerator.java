@@ -24,7 +24,7 @@ public class RouteGenerator implements architecture.RouteGenerator {
             }
 
             vuelos.add(new AirRoute(
-                    "FL-" + System.nanoTime(),              // evita duplicados
+                    "FL-" + System.nanoTime(),
                     origen,
                     destino,
                     30 + rand.nextInt(300),
