@@ -1,8 +1,10 @@
 
 package application;
 
+import java.io.IOException;
+
 public class MainAirRoutes {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Instancias de cada módulo
         DatalakeBootstrap datalake = new DatalakeBootstrap();
         DatamartBootstrap datamart = new DatamartBootstrap();

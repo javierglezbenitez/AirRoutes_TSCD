@@ -14,27 +14,52 @@ public class ApiClient {
     private final HttpClient http;
 
     public ApiClient(String baseUrl) {
-        this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length()-1) : baseUrl;
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         this.http = HttpClient.newHttpClient();
     }
 
+    // Salud
     public String health() throws IOException, InterruptedException {
         return get("/api/health");
     }
 
-    public String topDegree(int k) throws IOException, InterruptedException {
-        return get("/api/graph/top-degree?k=" + k);
+    // Tickets: todos
+    public String tickets(String origen, String destino, int limit) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s&limit=%d", url(origen), url(destino), limit);
+        return get("/api/graph/tickets?" + qs);
     }
 
-    public String shortestPath(String source, String target) throws IOException, InterruptedException {
-        String qs = String.format("source=%s&target=%s",
-                url(source), url(target));
-        return get("/api/graph/shortest-path?" + qs);
+    // Tickets: baratos (top N)
+    public String ticketsBaratos(String origen, String destino, int limit) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s&limit=%d", url(origen), url(destino), limit);
+        return get("/api/graph/tickets/baratos?" + qs);
     }
 
-    public String isolated() throws IOException, InterruptedException {
-        return get("/api/graph/isolated");
+    // Tickets: más barato (limit=1)
+    public String masBarato(String origen, String destino) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s&limit=%d", url(origen), url(destino), 1);
+        return get("/api/graph/tickets/baratos?" + qs);
     }
+
+    // Tickets: solo directos
+    public String ticketsDirectos(String origen, String destino, int limit) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s&limit=%d", url(origen), url(destino), limit);
+        return get("/api/graph/tickets/directos?" + qs);
+    }
+
+    // Resumen por aerolínea en ruta
+    public String resumenRuta(String origen, String destino) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s", url(origen), url(destino));
+        return get("/api/graph/ruta/resumen?" + qs);
+    }
+
+    // Disponibilidad de la ruta (directos vs con escala)
+    public String disponibilidadRuta(String origen, String destino) throws IOException, InterruptedException {
+        String qs = String.format("origen=%s&destino=%s", url(origen), url(destino));
+        return get("/api/graph/ruta/disponibilidad?" + qs);
+    }
+
+    // ---- utilidades HTTP ----
 
     private String get(String path) throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()

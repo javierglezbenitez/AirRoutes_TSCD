@@ -16,6 +16,7 @@ class RouteMapper {
         r.put("precio",          node.path("precio").asDouble());
         r.put("aerolinea",       node.path("aerolinea").asText());
         r.put("timestamp",       node.path("timestamp").asLong());
+        r.put("escala",          node.path("escala").asText());
         return r;
     }
 }

@@ -29,15 +29,22 @@ public class Neo4jGraphRepository implements GraphRepository {
                                 "ON CREATE SET v.precio = row.precio, " +
                                 "              v.duracion = row.duracionMinutos, " +
                                 "              v.timestamp = row.timestamp, " +
+                                "              v.escala = row.escala, " +              // ⬅ nuevo campo
                                 "              v.createdAt = datetime() " +
                                 "ON MATCH  SET v.precio = row.precio, " +
                                 "              v.duracion = row.duracionMinutos, " +
                                 "              v.timestamp = row.timestamp, " +
+                                "              v.escala = row.escala, " +              // ⬅ nuevo campo
                                 "              v.updatedAt = datetime() " +
                                 "MERGE (a)-[:OPERA]->(v) " +
                                 "MERGE (o)-[:ORIGEN]->(v) " +
                                 "MERGE (v)-[:DESTINO]->(d) " +
-                                // ⬇️ NUEVO: relación directa entre aeropuertos
+                                // Crear relación de escala si aplica
+                                "FOREACH (_ IN CASE WHEN row.escala IS NOT NULL AND row.escala <> 'None' THEN [1] ELSE [] END | " +
+                                "  MERGE (e:Aeropuerto {codigo: row.escala}) " +
+                                "  MERGE (v)-[:ESCALA]->(e) " +
+                                ") " +
+                                // Relación de ruta agregada (KPI agregados)
                                 "MERGE (o)-[ruta:RUTA]->(d) " +
                                 "ON CREATE SET ruta.createdAt = datetime(), " +
                                 "              ruta.lastPrice = row.precio, " +
@@ -75,8 +82,8 @@ public class Neo4jGraphRepository implements GraphRepository {
                 tx.run("CREATE CONSTRAINT v_codigo_unique IF NOT EXISTS FOR (v:Vuelo) REQUIRE v.codigo IS UNIQUE");
                 tx.run("CREATE INDEX a_nombre_idx IF NOT EXISTS FOR (a:Aerolinea) ON (a.nombre)");
                 tx.run("CREATE INDEX ap_codigo_idx IF NOT EXISTS FOR (ap:Aeropuerto) ON (ap.codigo)");
-                // (Opcional, Neo4j 5): índice sobre propiedades de relaciones RUTA
-                // tx.run("CREATE INDEX ruta_lastSeen_idx IF NOT EXISTS FOR ()-[r:RUTA]-() ON (r.lastSeenAt)");
+                // (Opcional) Índice sobre propiedad 'escala' del vuelo si buscas por ella frecuentemente:
+                // tx.run(\"CREATE INDEX v_escala_idx IF NOT EXISTS FOR (v:Vuelo) ON (v.escala)\");
                 return null;
             });
             System.out.println("   ✔ Constraints/índices OK");

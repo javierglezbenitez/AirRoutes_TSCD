@@ -5,6 +5,8 @@ import architecture.Datalake;
 import architecture.Storage;
 import architecture.StorageFactory;
 
+import java.io.IOException;
+
 /**
  * Bootstrap del módulo Datalake.
  * Expone start()/stop() para que el Orchestrator controle el ciclo de vida.
@@ -16,15 +18,15 @@ public class DatalakeBootstrap {
     /**
      * Arranca el generador del Datalake en un hilo propio (no bloquea).
      */
-    public void start() {
+    public void start() throws IOException {
         // Configuración: igual que en tu antiguo MainDatalake
-        String storageMode = System.getenv().getOrDefault("DATALAKE_MODE", "");
+        String storageMode = System.getenv().get("DATALAKE_MODE");
 
         StorageFactory factory = new DefaultStorageFactory();
         Storage storage = factory.createStorage(storageMode);
         Datalake datalake = new Datalake(storage);
-
-        RouteGenerator generator = new RouteGenerator();
+        String routePath = System.getenv().get("ROUTE_FILE_PATH");
+        RouteGenerator generator = new RouteGenerator(routePath);
 
         int batchSize = Integer.parseInt(String.valueOf(30));
         long intervalMillis = Long.parseLong(String.valueOf(30000));

@@ -1,0 +1,26 @@
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: graphroutes-api
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASS=${NEO4J_PASSWORD}
+      - SERVER_PORT=${SERVER_PORT:-8080}
+      # Opcionales
+      - GRAPH_LABEL=${GRAPH_LABEL:-Vuelo}
+      - GRAPH_REL_TYPE=${GRAPH_REL_TYPE:-RUTA}
+      - GRAPH_VISIBLE_PROP=${GRAPH_VISIBLE_PROP:-precio}
+    ports:
+      - "8080:8080"
+    networks:
+      - graphnet
+    restart: unless-stopped
+
+networks:
+  graphnet:
+    external: true
+    name: graphnet

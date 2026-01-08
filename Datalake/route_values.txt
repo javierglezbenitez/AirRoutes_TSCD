@@ -1,0 +1,56 @@
+[AEROLINEAS]
+Iberia
+Vueling
+Ryanair
+Air Europa
+Lufthansa
+KLM
+Air France
+British Airways
+Turkish Airlines
+Emirates
+
+[AEROPUERTOS]
+MAD
+BCN
+LPA
+TFN
+BIO
+AGP
+SVQ
+ALC
+PMI
+SCQ
+VLC
+GRX
+OVD
+SDR
+ZAZ
+LEI
+IBZ
+MAH
+GRO
+REU
+LCG
+FUE
+ACE
+MLN
+XRY
+CQM
+BJZ
+VGO
+LEN
+PNA
+EAS
+SPC
+RMU
+TFS
+LLE
+MJV
+CUE
+MUR
+HDF
+DRS
+HAM
+FRA
+MUC

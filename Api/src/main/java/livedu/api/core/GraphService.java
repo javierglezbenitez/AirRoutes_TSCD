@@ -2,8 +2,7 @@
 package livedu.api.core;
 
 import org.neo4j.driver.Driver;
-import org.neo4j.driver.SessionConfig;
-import org.springframework.beans.factory.annotation.Value; // IMPORT correcto del annotation
+import org.neo4j.driver.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,77 +13,110 @@ public class GraphService {
 
     private final Driver driver;
 
-    @Value("${graph.label:Aeropuerto}")
-    private String nodeLabel;
-
-    @Value("${graph.relType:RUTA}")
-    private String relType;
-
-    @Value("${graph.visibleProp:codigo}")
-    private String visibleProp;
-
     public GraphService(Driver driver) {
         this.driver = driver;
     }
 
-    // Fallback defensivo por si por alguna razón la inyección queda en blanco
-    private void ensureConfigDefaults() {
-        if (nodeLabel == null || nodeLabel.isBlank()) nodeLabel = "Aeropuerto";
-        if (relType == null || relType.isBlank()) relType = "RUTA";
-        if (visibleProp == null || visibleProp.isBlank()) visibleProp = "codigo";
+    /**
+     * Lista de tickets disponibles entre origen y destino.
+     * Incluye aerolínea, precio, duración, y si hay escala (y cuál).
+     */
+    public List<Map<String, Object>> tickets(String origen, String destino, int limit) {
+        String query = """
+            MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
+            OPTIONAL MATCH (a:Aerolinea)-[:OPERA]->(v)
+            OPTIONAL MATCH (v)-[:ESCALA]->(e:Aeropuerto)
+            RETURN v.codigo AS vuelo,
+                   a.nombre AS aerolinea,
+                   o.codigo AS origen,
+                   d.codigo AS destino,
+                   coalesce(v.escala, 'None') AS escala,
+                   e.codigo AS aeropuertoEscala,
+                   v.precio AS precio,
+                   v.duracion AS duracionMin,
+                   v.timestamp AS timestamp
+            ORDER BY precio ASC
+            LIMIT $limit
+        """;
+        return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    public List<String> shortestPath(String from, String to) {
-        ensureConfigDefaults();
-        String cypher = String.format("""
-                    MATCH (a:%s {%s:$from}), (b:%s {%s:$to})
-                    MATCH p = shortestPath((a)-[:%s*..100]-(b))
-                    RETURN [n IN nodes(p) | n.%s] AS names
-                """, nodeLabel, visibleProp, nodeLabel, visibleProp, relType, visibleProp);
-
-        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            var records = session.readTransaction(tx ->
-                    tx.run(cypher, Map.of("from", from, "to", to))
-                            .list(r -> r.get("names").asList(v -> v.asString()))
-            );
-            return records.isEmpty() ? List.of() : records.get(0);
-        }
+    /**
+     * Top N tickets más baratos entre origen y destino.
+     */
+    public List<Map<String, Object>> ticketsBaratos(String origen, String destino, int limit) {
+        String query = """
+            MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
+            OPTIONAL MATCH (a:Aerolinea)-[:OPERA]->(v)
+            OPTIONAL MATCH (v)-[:ESCALA]->(e:Aeropuerto)
+            RETURN v.codigo AS vuelo,
+                   a.nombre AS aerolinea,
+                   coalesce(v.escala, 'None') AS escala,
+                   e.codigo AS aeropuertoEscala,
+                   v.precio AS precio,
+                   v.duracion AS duracionMin
+            ORDER BY precio ASC
+            LIMIT $limit
+        """;
+        return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    public List<String> isolatedNodes() {
-        ensureConfigDefaults();
-        // Neo4j 5: usa EXISTS para comprobar patrones; COUNT en WHERE no vale
-        String cypher = String.format("""
-                    MATCH (n:%s)
-                    WHERE NOT EXISTS { MATCH (n)--() }
-                    RETURN coalesce(n.%s,'') AS name
-                    LIMIT 1000
-                """, nodeLabel, visibleProp);
-
-        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            return session.readTransaction(tx ->
-                    tx.run(cypher).list(r -> r.get("name").isNull() ? "" : r.get("name").asString())
-            );
-        }
+    /**
+     * Solo tickets directos (sin escala) entre origen y destino.
+     */
+    public List<Map<String, Object>> ticketsDirectos(String origen, String destino, int limit) {
+        String query = """
+            MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
+            WHERE v.escala IS NULL OR v.escala = 'None'
+            OPTIONAL MATCH (a:Aerolinea)-[:OPERA]->(v)
+            RETURN v.codigo AS vuelo,
+                   a.nombre AS aerolinea,
+                   v.precio AS precio,
+                   v.duracion AS duracionMin
+            ORDER BY precio ASC
+            LIMIT $limit
+        """;
+        return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    public List<Map<String, Object>> topDegree(int k) {
-        ensureConfigDefaults();
-        // Opción 1: grado contando TODAS las relaciones del nodo
-        String cypher = String.format("""
-                    MATCH (n:%s)
-                    RETURN coalesce(n.%s,'') AS name, COUNT { (n)--() } AS deg
-                    ORDER BY deg DESC
-                    LIMIT $k
-                """, nodeLabel, visibleProp);
+    /**
+     * Resumen por aerolínea en la ruta: min/avg/max de precio y duración media.
+     */
+    public List<Map<String, Object>> resumenRuta(String origen, String destino) {
+        String query = """
+            MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
+            MATCH (a:Aerolinea)-[:OPERA]->(v)
+            RETURN a.nombre AS aerolinea,
+                   count(v) AS vuelos,
+                   round(min(v.precio)*100)/100 AS minPrecio,
+                   round(max(v.precio)*100)/100 AS maxPrecio,
+                   round(avg(v.precio)*100)/100 AS avgPrecio,
+                   round(avg(v.duracion)) AS avgDuracionMin
+            ORDER BY avgPrecio ASC, vuelos DESC
+        """;
+        return runQuery(query, Map.of("origen", origen, "destino", destino));
+    }
 
-        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            return session.readTransaction(tx ->
-                    tx.run(cypher, Map.of("k", k)).list(r -> Map.of(
-                            "name", r.get("name").isNull() ? "" : r.get("name").asString(),
-                            "degree", r.get("deg").asInt(0)
-                    ))
-            );
+    /**
+     * Disponibilidad de la ruta: total, directos y con escala.
+     */
+    public List<Map<String, Object>> disponibilidadRuta(String origen, String destino) {
+        String query = """
+            MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
+            OPTIONAL MATCH (v)-[:ESCALA]->(:Aeropuerto)
+            WITH collect(v) AS vuelos
+            RETURN size(vuelos) AS total,
+                   size([x IN vuelos WHERE x.escala IS NULL OR x.escala = 'None']) AS directos,
+                   size([x IN vuelos WHERE x.escala IS NOT NULL AND x.escala <> 'None']) AS conEscala
+        """;
+        return runQuery(query, Map.of("origen", origen, "destino", destino));
+    }
+
+    // Utilidad común para lanzar lecturas Cypher y mapear a List<Map<String,Object>>
+    private List<Map<String, Object>> runQuery(String query, Map<String, Object> params) {
+        try (Session session = driver.session()) {
+            return session.executeRead(tx -> tx.run(query, params)
+                    .list(record -> record.asMap()));
         }
     }
 }
