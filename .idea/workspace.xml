@@ -4,23 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="CLI STARTED">
-      <change afterPath="$PROJECT_DIR$/Datalake/route_values.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-api.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="api y cli mejorados, proximamente empezamos con GUI">
+      <change afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLI/src/main/java/livedu/cli/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/CLI/src/main/java/livedu/cli/ApiClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLI/src/main/java/livedu/cli/ApiClient.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/architecture/AirRoute.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/architecture/AirRoute.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteFieldValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteFieldValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReaderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReaderImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orchestrator/src/main/java/application/MainAirRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orchestrator/src/main/java/application/MainAirRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-neo4j.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +106,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/CLI/src/main/java/livedu/cli/Main.java",
+    "onboarding.tips.debug.path": "C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/GUI/src/main/java/com/example/Main.java",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -121,7 +121,6 @@
           <value>
             <map>
               <entry key="generated-requests | #2" value="STOPPED" />
-              <entry key="generated-requests | #4" value="STOPPED" />
               <entry key="generated-requests | #5" value="STOPPED" />
               <entry key="generated-requests | #6" value="STOPPED" />
             </map>
@@ -130,24 +129,34 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="livedu.cli.Main" />
-      <module name="CLI" />
+  <component name="RunManager" selected="Application.MainAirRoutes">
+    <configuration name="MainAirRoutes" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="application.MainAirRoutes" />
+      <module name="Orchestrator" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="livedu.cli.*" />
+          <option name="PATTERN" value="application.*" />
           <option name="ENABLED" value="true" />
         </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#4" index="4" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#5" index="5" runType="Run single request">
@@ -170,20 +179,18 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.MainAirRoutes" />
       <item itemvalue="HTTP Request.generated-requests | #5" />
       <item itemvalue="HTTP Request.generated-requests | #6" />
-      <item itemvalue="HTTP Request.generated-requests | #4" />
       <item itemvalue="HTTP Request.generated-requests | #2" />
       <item itemvalue="Spring Boot.GraphRoutesApiApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.MainAirRoutes" />
         <item itemvalue="HTTP Request.generated-requests | #6" />
         <item itemvalue="HTTP Request.generated-requests | #2" />
         <item itemvalue="HTTP Request.generated-requests | #5" />
-        <item itemvalue="HTTP Request.generated-requests | #4" />
       </list>
     </recent_temporary>
   </component>
@@ -225,7 +232,8 @@
       <workItem from="1767347649170" duration="8487000" />
       <workItem from="1767356247807" duration="1074000" />
       <workItem from="1767783232628" duration="2092000" />
-      <workItem from="1767865122494" duration="8297000" />
+      <workItem from="1767865122494" duration="8450000" />
+      <workItem from="1767952589310" duration="14051000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -267,7 +275,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767785064090</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="api y cli mejorados, proximamente empezamos con GUI">
+      <option name="closed" value="true" />
+      <created>1767874322366</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1767874322366</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,7 +306,8 @@
     <MESSAGE value="Datamain padre done" />
     <MESSAGE value="Api started" />
     <MESSAGE value="CLI STARTED" />
-    <option name="LAST_COMMIT_MESSAGE" value="CLI STARTED" />
+    <MESSAGE value="api y cli mejorados, proximamente empezamos con GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="api y cli mejorados, proximamente empezamos con GUI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -11,9 +11,10 @@ public class AirRoute {
     private final double precio;
     private final String aerolinea;
     private final long timestamp;
+    private final int embarque;
 
     public AirRoute(String codigoVuelo, String origen, String destino,
-                    int duracionMinutos, double precio, String aerolinea, long timestamp, String escala) {
+                    int duracionMinutos, double precio, String aerolinea, long timestamp, String escala,int embarque) {
         this.codigoVuelo = codigoVuelo;
         this.origen = origen;
         this.destino = destino;
@@ -22,6 +23,8 @@ public class AirRoute {
         this.aerolinea = aerolinea;
         this.timestamp = timestamp;
         this.escala = escala;
+        this.embarque = embarque;
+
     }
 
     public String getCodigoVuelo() { return codigoVuelo; }
@@ -32,4 +35,5 @@ public class AirRoute {
     public double getPrecio() { return precio; }
     public String getAerolinea() { return aerolinea; }
     public long getTimestamp() { return timestamp; }
+    public long getEmbarque() { return embarque; }
 }

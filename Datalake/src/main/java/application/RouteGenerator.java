@@ -69,17 +69,23 @@ public class RouteGenerator implements architecture.RouteGenerator {
                 }
             }
 
+
+
+            int embarque = 1 + rand.nextInt(7);
+
             vuelos.add(new AirRoute(
                     "FL-" + System.nanoTime(),
                     origen,
                     destino,
-                    30 + rand.nextInt(300),
-                    Math.round(rand.nextDouble() * 50000.0) / 100.0,
-                    aerolineas.get(rand.nextInt(aerolineas.size())),
-                    System.currentTimeMillis(),
-                    escala
+                    30 + rand.nextInt(300), // duración
+                    Math.round(rand.nextDouble() * 50000.0) / 100.0, // precio
+                    aerolineas.get(rand.nextInt(aerolineas.size())), // aerolínea
+                    System.currentTimeMillis(), // timestamp
+                    escala,
+                    embarque
             ));
         }
         return vuelos;
+
     }
 }

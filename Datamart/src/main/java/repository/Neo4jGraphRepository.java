@@ -29,12 +29,14 @@ public class Neo4jGraphRepository implements GraphRepository {
                                 "ON CREATE SET v.precio = row.precio, " +
                                 "              v.duracion = row.duracionMinutos, " +
                                 "              v.timestamp = row.timestamp, " +
-                                "              v.escala = row.escala, " +              // ⬅ nuevo campo
+                                "              v.escala = row.escala, " +
+                                "              v.embarque = toInteger(row.embarque), " +  // ✅ añadido
                                 "              v.createdAt = datetime() " +
                                 "ON MATCH  SET v.precio = row.precio, " +
                                 "              v.duracion = row.duracionMinutos, " +
                                 "              v.timestamp = row.timestamp, " +
-                                "              v.escala = row.escala, " +              // ⬅ nuevo campo
+                                "              v.escala = row.escala, " +
+                                "              v.embarque = toInteger(row.embarque), " +  // ✅ añadido
                                 "              v.updatedAt = datetime() " +
                                 "MERGE (a)-[:OPERA]->(v) " +
                                 "MERGE (o)-[:ORIGEN]->(v) " +

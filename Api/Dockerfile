@@ -9,7 +9,7 @@ COPY Api/ ./Api/
 COPY Datalake/ ./Datalake/
 COPY Datamart/ ./Datamart/
 COPY Orchestrator/ ./Orchestrator/
-COPY CLI/ ./CLI/
+COPY GUI/ ./GUI/
 
 # Descarga dependencias (aprovecha cache)
 RUN mvn -q -DskipTests -pl Api -am dependency:go-offline

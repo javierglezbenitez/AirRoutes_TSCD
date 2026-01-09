@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Consulta de Vuelos – DataMart Neo4j</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- jsPDF -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+    <!-- QRCode -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+
+
+    <style>
+        :root { --primary:#2f6fed; --bg:#f7f8fb; --text:#1b1f24; --muted:#6b7280; --ok:#0f766e; --warn:#b45309; --err:#b91c1c; --card:#ffffff; --border:#e5e7eb; }
+        body { margin:0; font-family:Arial, sans-serif; background:var(--bg); color:var(--text); }
+        header { background:var(--card); padding:16px; border-bottom:1px solid var(--border); }
+        .container { max-width:1000px; margin:20px auto; padding:0 16px; }
+        .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:16px; }
+        .row { display:flex; gap:8px; flex-wrap:wrap; }
+        input { padding:8px; border:1px solid var(--border); border-radius:6px; }
+        button { padding:8px 12px; border-radius:6px; border:1px solid var(--border); cursor:pointer; }
+        button.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
+        table { width:100%; border-collapse:collapse; margin-top:12px; }
+        th, td { border:1px solid var(--border); padding:8px; text-align:center; }
+        thead th { background:#f3f4f6; }
+        .msg { margin-top:8px; padding:10px; border-radius:6px; }
+        .ok { background:#e7f7f5; color:var(--ok); border:1px solid #94d5cf; }
+        .warn { background:#fff6e7; color:var(--warn); border:1px solid #f8d491; }
+        .err { background:#ffecec; color:var(--err); border:1px solid #f1a1a1; }
+        .pill { display:inline-block; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#3730a3; font-size:12px; margin-right:6px; }
+        .kpis { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+        .kpi { background:#f3f4f6; border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:13px; }
+    </style>
+</head>
+<body>
+<header><h1>Consulta de Vuelos – DataMart Neo4j</h1></header>
+<div class="container">
+
+    <!-- Estado API -->
+    <div class="card"><div id="healthMsg" class="msg warn">Verificando API...</div></div>
+
+    <!-- Formulario -->
+    <div class="card">
+        <div class="row">
+            <input id="origen"  placeholder="Origen (ej. MUR)" value="MUR" />
+            <input id="destino" placeholder="Destino (ej. SDR)" value="SDR" />
+            <input id="limit"   type="number" value="20" style="width:80px;" />
+        </div>
+        <div class="row" style="margin-top:10px;">
+            <button class="primary" id="btnTodos">Todos</button>
+            <button id="btnBaratos">Baratos</button>
+            <button id="btnMasBarato">Más barato</button>
+            <button id="btnDirectos">Directos</button>
+        </div>
+        <div id="searchMsg" class="msg" style="display:none;"></div>
+    </div>
+
+    <!-- Tabla de vuelos -->
+    <div class="card">
+        <div class="row" style="justify-content:space-between; align-items:center;">
+            <div>
+                <span class="pill" id="pillRuta">Ruta: —</span>
+                <span class="pill" id="pillResultados">Resultados: 0</span>
+            </div>
+        </div>
+
+        <div class="kpis" id="kpisVuelos" style="display:none;">
+            <div class="kpi">Precio medio: <strong id="kpiPrecioMedio">—</strong></div>
+            <div class="kpi">Duración media: <strong id="kpiDurMedio">—</strong></div>
+            <div class="kpi">Aerolíneas distintas: <strong id="kpiAeros">—</strong></div>
+        </div>
+
+        <table id="tablaVuelos">
+            <thead>
+            <tr>
+                <th>Código Vuelo</th>
+                <th>Aerolínea</th>
+                <th>Precio</th>
+                <th>Duración</th>
+                <th>Escala</th>
+                <th>Embarque (h)</th>
+                <th class="col-accion">Acción</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    const BASE_URL = 'http://localhost:8080';
+
+    const fmtEUR = n => n==null ? '—' : Number(n).toLocaleString('es-ES', { style:'currency', currency:'EUR' });
+    const fmtHM  = min => (min==null || isNaN(min)) ? '—' : `${Math.floor(min/60)}h ${Math.round(min%60)}m`;
+    const setMsg = (el, text, cls) => { el.style.display='block'; el.textContent=text; el.className=`msg ${cls}`; };
+
+    let lastRows = [];
+
+    async function fetchJson(url) {
+        const res = await fetch(url);
+        const text = await res.text();
+        if (!res.ok) throw new Error(`HTTP ${res.status} - ${text}`);
+        try { return JSON.parse(text); } catch { throw new Error(`Respuesta no JSON: ${text}`); }
+    }
+
+    async function checkHealth() {
+        const el = document.getElementById('healthMsg');
+        try {
+            const res = await fetch(`${BASE_URL}/api/health`);
+            const t = await res.text();
+            if (t.trim().toUpperCase() === 'OK') setMsg(el, 'API conectada (OK)', 'ok');
+            else setMsg(el, `API respondió: ${t}`, 'warn');
+        } catch {
+            setMsg(el, 'API no disponible', 'err');
+        }
+    }
+
+    function renderVuelos(rows) {
+        lastRows = rows;
+        const tbody = document.querySelector('#tablaVuelos tbody');
+        tbody.innerHTML = '';
+
+        rows.forEach((v, i) => {
+            const embarqueTxt = (v.embarque==null || isNaN(v.embarque)) ? '—' : `En ${v.embarque} h`;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+        <td>${v.vuelo ?? '—'}</td>
+        <td>${v.aerolinea ?? '—'}</td>
+        <td>${fmtEUR(v.precio)}</td>
+        <td>${fmtHM(v.duracionMin)}</td>
+        <td>${v.escala ?? 'None'}</td>
+        <td>${embarqueTxt}</td>
+        <td>
+          <button class="primary btn-descargar" data-index="${i}">Descargar ticket</button>
+        </td>
+      `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('pillResultados').textContent = `Resultados: ${rows.length}`;
+
+        if (rows.length) {
+            const precios = rows.map(r => Number(r.precio)).filter(n => !isNaN(n));
+            const durs    = rows.map(r => Number(r.duracionMin)).filter(n => !isNaN(n));
+            const aeros   = new Set(rows.map(r => r.aerolinea).filter(Boolean));
+            const avg     = a => a.reduce((x,y)=>x+y,0) / (a.length || 1);
+            document.getElementById('kpiPrecioMedio').textContent = fmtEUR(avg(precios));
+            document.getElementById('kpiDurMedio').textContent    = fmtHM(avg(durs));
+            document.getElementById('kpiAeros').textContent       = aeros.size;
+            document.getElementById('kpisVuelos').style.display   = 'flex';
+        } else {
+            document.getElementById('kpisVuelos').style.display   = 'none';
+        }
+    }
+
+    async function callTickets(tipo) {
+        const o = document.getElementById('origen').value.toUpperCase();
+        const d = document.getElementById('destino').value.toUpperCase();
+        const l = document.getElementById('limit').value;
+        const msg = document.getElementById('searchMsg');
+        setMsg(msg, 'Consultando...', 'warn');
+        document.getElementById('pillRuta').textContent = `Ruta: ${o} → ${d}`;
+
+        let url = `${BASE_URL}/api/graph/tickets?origen=${encodeURIComponent(o)}&destino=${encodeURIComponent(d)}&limit=${encodeURIComponent(l)}`;
+        if (tipo === 'baratos')  url = `${BASE_URL}/api/graph/tickets/baratos?origen=${encodeURIComponent(o)}&destino=${encodeURIComponent(d)}&limit=${encodeURIComponent(l)}`;
+        if (tipo === 'mas')      url = `${BASE_URL}/api/graph/tickets/mas-barato?origen=${encodeURIComponent(o)}&destino=${encodeURIComponent(d)}`;
+        if (tipo === 'directos') url = `${BASE_URL}/api/graph/tickets/directos?origen=${encodeURIComponent(o)}&destino=${encodeURIComponent(d)}&limit=${encodeURIComponent(l)}`;
+
+        try {
+            const data = await fetchJson(url);
+            const rows = Array.isArray(data) ? data : (data ? [data] : []);
+            renderVuelos(rows);
+            setMsg(msg, `OK: ${rows.length} resultados`, 'ok');
+        } catch(e) {
+            setMsg(msg, e.message, 'err');
+        }
+    }
+
+    document.querySelector('#tablaVuelos tbody').addEventListener('click', async (ev) => {
+        const btn = ev.target.closest('.btn-descargar');
+        if (!btn) return;
+
+        const i = Number(btn.dataset.index);
+        const v = lastRows[i];
+        const o = document.getElementById('origen').value.toUpperCase();
+        const d = document.getElementById('destino').value.toUpperCase();
+
+        const ticket = {
+            vuelo: v.vuelo,
+            aerolinea: v.aerolinea,
+            origen: o,
+            destino: d,
+            precio: v.precio,
+            duracionMin: v.duracionMin,
+            escala: v.escala,
+            embarque: v.embarque
+        };
+
+        try {
+            await generarTicketPDF(ticket);
+        } catch (e) {
+            alert('No se pudo generar el PDF: ' + ((e && e.message) ? e.message : String(e)));
+        }
+    });
+
+    document.getElementById('btnTodos').onclick     = () => callTickets('todos');
+    document.getElementById('btnBaratos').onclick   = () => callTickets('baratos');
+    document.getElementById('btnMasBarato').onclick = () => callTickets('mas');
+    document.getElementById('btnDirectos').onclick  = () => callTickets('directos');
+
+    async function generarTicketPDF(ticket) {
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) throw new Error('jsPDF no cargado. Revisa tu conexión al CDN o usa scripts locales.');
+
+        const doc = new jsPDF({ unit: 'pt', format: 'a6', orientation: 'landscape' });
+
+        doc.setDrawColor(47, 111, 237); doc.setLineWidth(1);
+        doc.roundedRect(12, 12, doc.internal.pageSize.getWidth()-24, doc.internal.pageSize.getHeight()-24, 8, 8, 'S');
+
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+        doc.text('BOARDING PASS', 24, 36);
+
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(11);
+        const precioTxt = fmtEUR(ticket.precio);
+        const durTxt    = fmtHM(ticket.duracionMin);
+        const escTxt    = (ticket.escala && ticket.escala!=='None') ? ticket.escala : 'Directo';
+        const embTxt    = (ticket.embarque==null || isNaN(ticket.embarque)) ? '—' : `En ${ticket.embarque} h`;
+
+        let y = 60;
+        doc.text(`Vuelo: ${ticket.vuelo ?? '—'}`, 24, y); y += 16;
+        doc.text(`Aerolínea: ${ticket.aerolinea ?? '—'}`, 24, y); y += 16;
+        doc.text(`RUTA: de ${ticket.origen ?? '—'} a ${ticket.destino ?? '—'}`, 24, y); y += 16;
+        doc.text(`Precio: ${precioTxt}`, 24, y); y += 16;
+        doc.text(`Duración: ${durTxt}`, 24, y); y += 16;
+        doc.text(`Escala: ${escTxt}`, 24, y); y += 16;
+        doc.text(`Embarque: ${embTxt}`, 24, y); y += 20;
+
+        doc.setFontSize(9); doc.setTextColor(110);
+        doc.text(`Emitido: ${new Date().toLocaleString('es-ES')}`, 24, doc.internal.pageSize.getHeight()-24);
+
+        try {
+            if (window.QRCode && typeof window.QRCode.toDataURL === 'function') {
+                const payload = {
+                    vuelo: ticket.vuelo, aerolinea: ticket.aerolinea,
+                    origen: ticket.origen, destino: ticket.destino,
+                    precio: ticket.precio, duracionMin: ticket.duracionMin,
+                    escala: ticket.escala, embarque: ticket.embarque,
+                    issuedAt: new Date().toISOString()
+                };
+                const qrDataUrl = await window.QRCode.toDataURL(JSON.stringify(payload), { width: 256, margin: 1 });
+                doc.addImage(qrDataUrl, 'PNG', doc.internal.pageSize.getWidth()-160, 40, 120, 120);
+            } else {
+                doc.setTextColor(180);
+                doc.text('QR no disponible', doc.internal.pageSize.getWidth()-160, 110);
+            }
+        } catch (e) {
+            doc.setTextColor(180);
+            doc.text('QR no disponible', doc.internal.pageSize.getWidth()-160, 110);
+            console.warn('QR no generado:', e);
+        }
+
+        doc.save(`ticket-${ticket.vuelo ?? (ticket.origen+'-'+ticket.destino)}.pdf`);
+    }
+
+    checkHealth();
+</script>
+</body>
+</html>

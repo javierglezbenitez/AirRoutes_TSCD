@@ -19,7 +19,7 @@ public class GraphService {
 
     /**
      * Lista de tickets disponibles entre origen y destino.
-     * Incluye aerolínea, precio, duración, y si hay escala (y cuál).
+     * Incluye aerolínea, precio, duración, embarque y si hay escala (y cuál).
      */
     public List<Map<String, Object>> tickets(String origen, String destino, int limit) {
         String query = """
@@ -33,7 +33,8 @@ public class GraphService {
                    coalesce(v.escala, 'None') AS escala,
                    e.codigo AS aeropuertoEscala,
                    v.precio AS precio,
-                   v.duracion AS duracionMin,
+                   coalesce(v.duracion, v.duracionMinutos) AS duracionMin,
+                   v.embarque AS embarque,
                    v.timestamp AS timestamp
             ORDER BY precio ASC
             LIMIT $limit
@@ -54,7 +55,8 @@ public class GraphService {
                    coalesce(v.escala, 'None') AS escala,
                    e.codigo AS aeropuertoEscala,
                    v.precio AS precio,
-                   v.duracion AS duracionMin
+                   coalesce(v.duracion, v.duracionMinutos) AS duracionMin,
+                   v.embarque AS embarque
             ORDER BY precio ASC
             LIMIT $limit
         """;
@@ -72,7 +74,8 @@ public class GraphService {
             RETURN v.codigo AS vuelo,
                    a.nombre AS aerolinea,
                    v.precio AS precio,
-                   v.duracion AS duracionMin
+                   coalesce(v.duracion, v.duracionMinutos) AS duracionMin,
+                   v.embarque AS embarque
             ORDER BY precio ASC
             LIMIT $limit
         """;
@@ -81,6 +84,7 @@ public class GraphService {
 
     /**
      * Resumen por aerolínea en la ruta: min/avg/max de precio y duración media.
+     * (No lleva embarque porque es agregación por aerolínea.)
      */
     public List<Map<String, Object>> resumenRuta(String origen, String destino) {
         String query = """
@@ -91,7 +95,7 @@ public class GraphService {
                    round(min(v.precio)*100)/100 AS minPrecio,
                    round(max(v.precio)*100)/100 AS maxPrecio,
                    round(avg(v.precio)*100)/100 AS avgPrecio,
-                   round(avg(v.duracion)) AS avgDuracionMin
+                   round(avg(coalesce(v.duracion, v.duracionMinutos))) AS avgDuracionMin
             ORDER BY avgPrecio ASC, vuelos DESC
         """;
         return runQuery(query, Map.of("origen", origen, "destino", destino));
@@ -103,7 +107,6 @@ public class GraphService {
     public List<Map<String, Object>> disponibilidadRuta(String origen, String destino) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
-            OPTIONAL MATCH (v)-[:ESCALA]->(:Aeropuerto)
             WITH collect(v) AS vuelos
             RETURN size(vuelos) AS total,
                    size([x IN vuelos WHERE x.escala IS NULL OR x.escala = 'None']) AS directos,

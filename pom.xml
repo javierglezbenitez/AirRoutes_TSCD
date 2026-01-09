@@ -13,7 +13,7 @@
         <module>Datamart</module>
         <module>Orchestrator</module>
         <module>Api</module>
-        <module>CLI</module>
+        <module>GUI</module>
     </modules>
 
     <properties>
