@@ -14,25 +14,28 @@ public class AppConfig {
     private final long connectRetrySleepMs;
     private final long pollIntervalMs;
 
-    private final String datamartMode; // "EC2" (por defecto) o "LOCAL"
-    private final String neo4jBoltUri; // NEO4J_URI o NEO4J_BOLT_URI
+    private final String datamartMode;   // "EC2" (por defecto) o "LOCAL"
+    private final String neo4jBoltUri;   // soporta NEO4J_BOLT_URI o NEO4J_URI
 
     public AppConfig(Map<String, String> env) {
         this.region = env.getOrDefault("AWS_REGION", "");
         this.bucket = env.getOrDefault("S3_BUCKET", "");
         this.neo4jUser = env.getOrDefault("NEO4J_USER", "");
-        this.neo4jPassword = Objects.requireNonNull(env.get("NEO4J_PASSWORD"), "");
+        this.neo4jPassword = Objects.requireNonNull(env.get("NEO4J_PASSWORD"), "NEO4J_PASSWORD requerido");
         this.instanceName = env.getOrDefault("EC2_INSTANCE_NAME", "");
-        this.sshTimeoutMs = Long.parseLong(String.valueOf(180000));
-        this.connectRetrySleepMs = Long.parseLong(String.valueOf(10000));
-        this.pollIntervalMs = Long.parseLong(String.valueOf(40000));
+        this.sshTimeoutMs = 180_000L;
+        this.connectRetrySleepMs = 10_000L;
+        this.pollIntervalMs = 40_000L;
 
-        // Default conserva comportamiento actual
-        this.datamartMode = env.get("DATAMART_MODE");
+        // ✅ Default a EC2 si no está definido
+        this.datamartMode = env.getOrDefault("DATAMART_MODE", "EC2");
 
-        // Soporta NEO4J_URI (tu .env) o NEO4J_BOLT_URI
-        String uri = env.get("NEO4J_URI");
-        this.neo4jBoltUri = uri;
+        // ✅ Soporta ambas variables, priorizando NEO4J_BOLT_URI
+        String bolt = env.getOrDefault("NEO4J_BOLT_URI", "");
+        if (bolt == null || bolt.isBlank()) {
+            bolt = env.getOrDefault("NEO4J_URI", "bolt://localhost:7687");
+        }
+        this.neo4jBoltUri = bolt;
     }
 
     public String getRegion() { return region; }

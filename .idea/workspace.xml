@@ -4,23 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="api y cli mejorados, proximamente empezamos con GUI">
-      <change afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="GUI HECHA">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLI/src/main/java/livedu/cli/ApiClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/architecture/AirRoute.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/architecture/AirRoute.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteFieldValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteFieldValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReaderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/S3DatalakeReaderImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-neo4j.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-neo4j.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,48 +61,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Launcher.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.MainAirRoutes.executor": "Run",
-    "Application.MainDatalake.executor": "Run",
-    "Application.MainDatamart.executor": "Run",
-    "Docker.docker-compose.yml.neo4j: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "HTTP Request.generated-requests | #1.executor": "Run",
-    "HTTP Request.generated-requests | #2.executor": "Run",
-    "HTTP Request.generated-requests | #3.executor": "Run",
-    "HTTP Request.generated-requests | #4.executor": "Run",
-    "HTTP Request.generated-requests | #5.executor": "Run",
-    "HTTP Request.generated-requests | #6.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SHELLCHECK.PATH": "C:\\Users\\cgsos\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe",
-    "Spring Boot.GraphRoutesApiApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/cgsos/Documents/Tercero/Big Data/JavaSearchEngine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/GUI/src/main/java/com/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainAirRoutes.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainDatalake.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainDatamart.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.neo4j: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #5.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #6.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SHELLCHECK.PATH&quot;: &quot;C:\\Users\\cgsos\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe&quot;,
+    &quot;Spring Boot.GraphRoutesApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/cgsos/Documents/Tercero/Big Data/JavaSearchEngine&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/GUI/src/main/java/com/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunDashboard">
     <option name="configurationStatuses">
       <map>
@@ -233,7 +222,8 @@
       <workItem from="1767356247807" duration="1074000" />
       <workItem from="1767783232628" duration="2092000" />
       <workItem from="1767865122494" duration="8450000" />
-      <workItem from="1767952589310" duration="14051000" />
+      <workItem from="1767952589310" duration="14649000" />
+      <workItem from="1768037190874" duration="1968000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -283,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767874322366</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="GUI HECHA">
+      <option name="closed" value="true" />
+      <created>1767966968711</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1767966968711</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,7 +305,8 @@
     <MESSAGE value="Api started" />
     <MESSAGE value="CLI STARTED" />
     <MESSAGE value="api y cli mejorados, proximamente empezamos con GUI" />
-    <option name="LAST_COMMIT_MESSAGE" value="api y cli mejorados, proximamente empezamos con GUI" />
+    <MESSAGE value="GUI HECHA" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI HECHA" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
