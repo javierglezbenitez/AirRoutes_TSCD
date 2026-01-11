@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="GUI HECHA">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-datalake.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/DatalakeRunnerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/RouteGeneratorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/architecture/DatalakeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/LocalStorageTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/S3WebServiceIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-neo4j.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-neo4j.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datalake/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datalake/route_values.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/resources/route_values.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +47,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/javierglezbenitez/AirRoutes_TSCD.git&quot;,
-    &quot;accountId&quot;: &quot;8c6f8dc2-1533-4e30-97c0-c9861b9bf3be&quot;
+    &quot;accountId&quot;: &quot;f7a30d2e-6a53-4518-8392-237209b9d8c7&quot;
   }
 }</component>
   <component name="HttpClientOnboardingState">{
@@ -89,7 +96,7 @@
     &quot;Spring Boot.GraphRoutesApiApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/cgsos/Documents/Tercero/Big Data/JavaSearchEngine&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jorge gonzalez/Documents/Cuarto 2025-2026/1er Cuatri/TSCD/AirRoutes_TSCD&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -103,22 +110,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunDashboard">
-    <option name="configurationStatuses">
-      <map>
-        <entry key="HttpClient.HttpRequestRunConfigurationType">
-          <value>
-            <map>
-              <entry key="generated-requests | #2" value="STOPPED" />
-              <entry key="generated-requests | #5" value="STOPPED" />
-              <entry key="generated-requests | #6" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jorge gonzalez\Documents\Cuarto 2025-2026\1er Cuatri\TSCD\AirRoutes_TSCD\Datalake\src\resources" />
+      <recent name="C:\Users\jorge gonzalez\Documents\Cuarto 2025-2026\1er Cuatri\TSCD\AirRoutes_TSCD\Datalake\src" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.MainAirRoutes">
+  <component name="RunManager" selected="HTTP Request.generated-requests | #1">
     <configuration name="MainAirRoutes" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="envFilePaths">
         <option value="$PROJECT_DIR$/.env" />
@@ -145,14 +143,30 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
+    <configuration name="generated-requests | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#5" index="5" runType="Run single request">
+    <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="2" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#6" index="6" runType="Run single request">
+    <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="5" runType="Run single request">
       <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="6" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="AirRoutes" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="AirRoutes" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="GraphRoutesApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Api" />
@@ -169,6 +183,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.MainAirRoutes" />
+      <item itemvalue="HTTP Request.generated-requests | #1" />
       <item itemvalue="HTTP Request.generated-requests | #5" />
       <item itemvalue="HTTP Request.generated-requests | #6" />
       <item itemvalue="HTTP Request.generated-requests | #2" />
@@ -176,6 +191,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #1" />
         <item itemvalue="Application.MainAirRoutes" />
         <item itemvalue="HTTP Request.generated-requests | #6" />
         <item itemvalue="HTTP Request.generated-requests | #2" />
@@ -186,11 +202,12 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="" />
@@ -224,6 +241,8 @@
       <workItem from="1767865122494" duration="8450000" />
       <workItem from="1767952589310" duration="14649000" />
       <workItem from="1768037190874" duration="1968000" />
+      <workItem from="1768039532973" duration="1049000" />
+      <workItem from="1768127379494" duration="1631000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />

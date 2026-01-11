@@ -1,0 +1,50 @@
+
+name: CI Datalake
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "Datalake/**"
+      - ".github/workflows/ci-datalake.yml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "Datalake/**"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      # Ejecuta unitarias + integración + cobertura SOLO en el módulo Datalake
+      - name: Maven verify (unit + IT + coverage)
+        run: mvn -B -q -pl Datalake -am clean verify
+
+      # Publicar reportes JUnit
+      - name: Upload JUnit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-datalake
+          path: |
+            **/target/surefire-reports/*.xml
+            **/target/failsafe-reports/*.xml
+
+      # Publicar reporte JaCoCo HTML
+      - name: Upload JaCoCo coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-datalake
+          path: Datalake/target/site/jacoco/**
