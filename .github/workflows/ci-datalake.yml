@@ -1,20 +1,28 @@
 
-name: CI Datalake
+name: CI Datamart
 
 on:
   push:
     branches: [ "master" ]
     paths:
-      - "Datalake/**"
-      - ".github/workflows/ci-datalake.yml"
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
   pull_request:
     branches: [ "master" ]
     paths:
-      - "Datalake/**"
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
+
+    env:
+      # Testcontainers tuning: reduce checks en CI para hacerlo más ágil
+      TESTCONTAINERS_CHECKS_DISABLE: "true"
+      # Si tus IT del repo leen esta variable, puedes parametrizar la contraseña
+      # (tu código usa "testpassword" por defecto, esto es opcional)
+      NEO4J_TEST_PWD: "testpassword"
 
     steps:
       - name: Checkout
@@ -27,24 +35,38 @@ jobs:
           distribution: "temurin"
           cache: "maven"
 
-      # Ejecuta unitarias + integración + cobertura SOLO en el módulo Datalake
-      - name: Maven verify (unit + IT + coverage)
-        run: mvn -B -q -pl Datalake -am clean verify
+      # (Opcional) Verificar Docker para Testcontainers
+      - name: Check Docker availability
+        run: |
+          docker version
+          docker info
 
-      # Publicar reportes JUnit
+      # Ejecuta unitarias + integración + cobertura SOLO en el módulo Datamart
+      - name: Maven verify (unit + IT + coverage)
+        run: mvn -B -q -pl Datamart -am clean verify
+
+      # Publicar reportes JUnit (Surefire + Failsafe)
       - name: Upload JUnit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: junit-datalake
+          name: junit-datamart
           path: |
-            **/target/surefire-reports/*.xml
-            **/target/failsafe-reports/*.xml
+            Datamart/target/surefire-reports/*.xml
+            Datamart/target/failsafe-reports/*.xml
 
-      # Publicar reporte JaCoCo HTML
+      # Publicar reporte JaCoCo HTML del módulo Datamart
       - name: Upload JaCoCo coverage
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-datalake
-          path: Datalake/target/site/jacoco/**
+          name: jacoco-datamart
+          path: Datamart/target/site/jacoco/**
+
+      # (Opcional) Publicar el JAR si el build pasa
+      - name: Upload Datamart JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Datamart-jar
+          path: Datamart/target/Datamart-1.0-SNAPSHOT.jar

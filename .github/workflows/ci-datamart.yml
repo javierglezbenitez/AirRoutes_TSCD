@@ -1,0 +1,93 @@
+
+name: CI Datalake
+
+on:
+  push:
+    paths:
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
+  pull_request:
+    paths:
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
+
+# Evita carreras de builds sobre la misma rama/PR
+concurrency:
+  group: datamart-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: Unit tests (Datamart)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build & run unit tests
+        run: mvn -q -pl Datamart -am -DskipITs=true test
+
+      # Export surefire reports si algo falla
+      - name: Upload surefire reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: datamart-surefire-reports
+          path: Datamart/target/surefire-reports
+
+  integration-tests:
+    name: Integration tests (Datamart)
+    runs-on: ubuntu-22.04
+    needs: unit-tests
+
+    env:
+      # Testcontainers tuning (reduce checks en CI para hacerlo más ágil)
+      TESTCONTAINERS_CHECKS_DISABLE: "true"
+      # Si tus IT del repo leen esta variable, se usa como password de Neo4j;
+      # tu código ya usa "testpassword" por defecto. Cambia aquí si lo necesitas:
+      NEO4J_TEST_PWD: "testpassword"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # Verificar que Docker está disponible (necesario para Testcontainers)
+      - name: Check Docker availability
+        run: |
+          docker version
+          docker info
+
+      # Ejecuta los IT; incluye Datamart y módulos dependientes (-am)
+      - name: Run integration tests
+        run: mvn -q -pl Datamart -am verify
+
+      # Export failsafe reports si algo falla
+      - name: Upload failsafe reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: datamart-failsafe-reports
+          path: Datamart/target/failsafe-reports
+
+      # (Opcional) Publicar el JAR si el build pasa
+      - name: Upload Datamart JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Datamart-jar
+          path: Datamart/target/Datamart-1.0-SNAPSHOT.jar
