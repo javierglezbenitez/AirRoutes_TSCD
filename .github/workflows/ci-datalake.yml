@@ -3,12 +3,12 @@ name: CI Datalake
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths:
       - "Datalake/**"
       - ".github/workflows/ci-datalake.yml"
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths:
       - "Datalake/**"
 
