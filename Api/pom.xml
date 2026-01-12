@@ -93,40 +93,44 @@
                 <artifactId>regions</artifactId>
                 <version>2.25.60</version>
             </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <!-- Excluye JUnit Vintage si no lo usas -->
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
+
 
 
 
     <build>
         <plugins>
-            <!-- Plugin Spring Boot -->
+            <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <layers enabled="true"/>
-                </configuration>
             </plugin>
 
-            <!-- Compilación Java -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <release>${java.version}</release>
-                </configuration>
-            </plugin>
-
-            <!-- Surefire para tests -->
+            <!-- Surefire para tests unitarios -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -135,22 +139,24 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
+
+            <!-- ✅ JaCoCo para cobertura -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
                 <executions>
                     <execution>
-                        <id>run-ecr-ensure</id>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>livedu.api.tools.EcrEnsureRepoRunner</mainClass>
-                        </configuration>
+                        <goals><goal>prepare-agent</goal></goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals><goal>report</goal></goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

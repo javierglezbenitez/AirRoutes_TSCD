@@ -1,0 +1,101 @@
+
+name: Deploy Api (EC2)
+
+on:
+  # Despliegue manual desde la UI de Actions
+  workflow_dispatch:
+    inputs:
+      aws_region:
+        description: "AWS region (ej: us-east-1)"
+        default: "us-east-1"
+        required: true
+        type: string
+      api_instance_tag_name:
+        description: "Tag Name de la instancia EC2 que ejecutará la API"
+        default: "graph-routes-api"
+        required: true
+        type: string
+      repo_name:
+        description: "Nombre lógico de la imagen/JAR (coincide con REPO_NAME)"
+        default: "graph-routes-api"
+        required: true
+        type: string
+      neo4j_uri:
+        description: "URI de Neo4j (ej: neo4j://host:7687)"
+        default: "neo4j://54.242.215.23:7687"
+        required: true
+        type: string
+      neo4j_user:
+        description: "Usuario Neo4j"
+        default: "neo4j"
+        required: true
+        type: string
+      create_api:
+        description: "Si no existe la instancia, crearla (true/false)"
+        default: "true"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    # Variables que consume tu script deploy_api.sh
+    env:
+      AWS_REGION: ${{ inputs.aws_region }}
+      REPO_NAME: ${{ inputs.repo_name }}
+      API_INSTANCE_TAG_NAME: ${{ inputs.api_instance_tag_name }}
+      CREATE_API: ${{ inputs.create_api }}
+      EC2_USER: "ec2-user"
+
+      # Credenciales Neo4j que se inyectan a setup_api.sh y contenedor
+      NEO4J_URI: ${{ inputs.neo4j_uri }}
+      NEO4J_USER: ${{ inputs.neo4j_user }}
+      NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }} # ⬅️ define este secret en el repo
+
+      # Si tienes Docker Hub y quieres que el job de CI publique imagen:
+      API_IMAGE: ${{ vars.API_IMAGE || '' }}         # ej: "usuario/graph-routes-api:latest"
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Configura credenciales AWS (usa tus secrets del repo)
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ env.AWS_REGION }}
+
+      # Verifica utilidades que usa el script (aws, docker, mvn, ssh/scp)
+      - name: Check toolchain
+        run: |
+          aws --version
+          docker version
+          docker info
+          mvn -v
+          ssh -V
+          scp -V
+
+      # Construye el JAR que tu script luego subirá a la instancia
+      - name: Build API jar (skip tests)
+        run: mvn -B -q -DskipTests -pl Api -am package
+
+      # Ejecuta tu script de despliegue (crea KeyPair, EC2, copia setup_api.sh + JAR, run container y verifica /api/health)
+      - name: Run deploy script
+        run: bash scripts/deploy_api.sh
+
+      # (Opcional) Si el despliegue falla, subimos logs para depurar
+      - name: Upload setup script (for debugging)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup_api_sh
+          path: Api/src/main/resources/setup_api.sh

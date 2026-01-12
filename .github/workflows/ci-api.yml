@@ -1,0 +1,62 @@
+
+name: CI Api
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - "Api/**"
+      - ".github/workflows/ci-api.yml"
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - "Api/**"
+      - ".github/workflows/ci-api.yml"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      # Dummy AWS por si alguna lib los mira (tests de controller no lo usan)
+      AWS_ACCESS_KEY_ID: "test"
+      AWS_SECRET_ACCESS_KEY: "test"
+      AWS_REGION: "us-east-1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: Maven verify (unit + coverage) on Api
+        run: mvn -B -q -pl Api -am clean verify
+
+      - name: Upload JUnit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-api
+          path: |
+            Api/target/surefire-reports/*.xml
+            Api/target/failsafe-reports/*.xml
+
+      - name: Upload JaCoCo coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-api
+          path: Api/target/site/jacoco/**
+
+      - name: Upload API JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Api-jar
+          path: Api/target/*.jar
