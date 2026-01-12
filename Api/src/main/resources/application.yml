@@ -6,6 +6,7 @@ spring:
   application:
     name: graph-routes-api
 
+
 # Configuración Neo4j
 neo4j:
   uri: ${NEO4J_URI:}           # Si se pasa por env, se usa sin autodiscovery
