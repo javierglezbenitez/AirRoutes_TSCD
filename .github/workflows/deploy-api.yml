@@ -34,13 +34,14 @@ on:
         default: "true"
         required: true
         type: choice
-        options: ["true", "false"]
+        options: ["true","false"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
+    # ⚠️ Define estos secrets/vars en Settings → Secrets and variables → Actions
     env:
       AWS_REGION: ${{ inputs.aws_region }}
       REPO_NAME: ${{ inputs.repo_name }}
@@ -48,12 +49,12 @@ jobs:
       CREATE_API: ${{ inputs.create_api }}
       EC2_USER: "ec2-user"
 
-      # Credenciales Neo4j para setup_api.sh / contenedor
+      # Neo4j ⇒ usado por setup_api.sh/contendor
       NEO4J_URI: ${{ inputs.neo4j_uri }}
       NEO4J_USER: ${{ inputs.neo4j_user }}
       NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
 
-      # (Opcional) si usas registry
+      # (Opcional) despliegue con imagen de registry en vez de build local
       API_IMAGE: ${{ vars.API_IMAGE || '' }}
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -82,7 +83,28 @@ jobs:
         run: mvn -B -q -DskipTests -pl Api -am package
 
       - name: Run deploy script
-        run: bash scripts/deploy_api.sh
+        id: deploy
+        run: |
+          set -euo pipefail
+          # Ejecuta tu script. Éste ya:
+          #  - crea/valida KeyPair y .pem
+          #  - crea/encuentra EC2 con tag Name=${API_INSTANCE_TAG_NAME}
+          #  - copia setup_api.sh + JAR + Dockerfile.local
+          #  - lanza el contenedor y hace health-check
+          bash scripts/deploy_api.sh
+
+          # Extra: saca la IP pública como output para que se muestre en la UI
+          API_IP="$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=${API_INSTANCE_TAG_NAME}" "Name=instance-state-name,Values=running" \
+            --region "${AWS_REGION}" \
+            --query "Reservations[0].Instances[0].PublicIpAddress" --output text)"
+          echo "ip=${API_IP}" >> $GITHUB_OUTPUT
+          echo "API_IP=${API_IP}" >> $GITHUB_ENV
+
+      - name: Show deployed URL
+        run: |
+          echo "API health: http://${API_IP}:8080/api/health"
+          echo "OpenAPI UI: http://${API_IP}:8080/swagger-ui/index.html"
 
       - name: Upload setup script (on failure)
         if: failure()
@@ -90,3 +112,6 @@ jobs:
         with:
           name: setup_api_sh
           path: Api/src/main/resources/setup_api.sh
+
+    outputs:
+      api_ip: ${{ steps.deploy.outputs.ip }}
