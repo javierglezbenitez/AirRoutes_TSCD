@@ -6,21 +6,14 @@ spring:
   application:
     name: graph-routes-api
 
+  neo4j:
+    uri: ${SPRING_NEO4J_URI:${NEO4J_URI:}}
+    authentication:
+      username: ${SPRING_NEO4J_AUTHENTICATION_USERNAME:${NEO4J_USER:neo4j}}
+      password: ${SPRING_NEO4J_AUTHENTICATION_PASSWORD:${NEO4J_PASS:neo4j}}
+    security:
+      encrypted: false
 
-# Configuración Neo4j
-neo4j:
-  uri: ${NEO4J_URI:}           # Si se pasa por env, se usa sin autodiscovery
-  user: ${NEO4J_USER:neo4j}
-  pass: ${NEO4J_PASS:neo4j}
-
-# Autodescubrimiento AWS (por tag Name)
-aws:
-  autodiscovery:
-    enabled: ${AWS_AUTODISCOVERY_ENABLED:true}    # activo por defecto
-  region: ${AWS_REGION:us-east-1}                 # región de la EC2 del Datamart
-  datamartTag: ${DATAMART_TAG_NAME:neo4j-datamart} # tag Name de la instancia Neo4j
-
-# Actuator (útil si luego usas orquestadores)
 management:
   endpoints:
     web:

@@ -4,36 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="datamart arreglado">
-      <change afterPath="$PROJECT_DIR$/Api/scripts/build_and_push_ecr.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2Neo4jLocator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2TagLocator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/tools/EcrEnsureRepoRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/resources/logback-spring.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="Api in aws started">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Api/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/GraphRoutesApiApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/GraphRoutesApiApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/HealthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/HealthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/DatamartOrchestrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/LocalDatamartOrchestrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/S3IngestionWorkflow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/SshNeo4jSetupWorkflow.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/workflow/SshNeo4jSetupWorkflow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/KeyPairHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/helpers/KeyPairHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/config/Neo4jClientProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/config/Neo4jClientProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/CompositeRouteParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/CompositeRouteParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-api.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-api.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/Neo4jConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +229,9 @@
       <workItem from="1768037190874" duration="1968000" />
       <workItem from="1768152980801" duration="2382000" />
       <workItem from="1768167224348" duration="12400000" />
-      <workItem from="1768179657954" duration="1215000" />
+      <workItem from="1768179657954" duration="1284000" />
+      <workItem from="1768208772204" duration="11176000" />
+      <workItem from="1768220101487" duration="2593000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -309,7 +289,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767966968711</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Api in aws started">
+      <option name="closed" value="true" />
+      <created>1768180902235</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1768180902235</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Api in aws started">
+      <option name="closed" value="true" />
+      <created>1768180943930</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1768180943930</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,7 +333,8 @@
     <MESSAGE value="CLI STARTED" />
     <MESSAGE value="api y cli mejorados, proximamente empezamos con GUI" />
     <MESSAGE value="GUI HECHA" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI HECHA" />
+    <MESSAGE value="Api in aws started" />
+    <option name="LAST_COMMIT_MESSAGE" value="Api in aws started" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

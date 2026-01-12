@@ -1,27 +1,22 @@
+
 #!/usr/bin/env bash
 set -euxo pipefail
 
 log(){ echo -e "$@"; }
 
 # -----------------------------
-# Entradas obligatorias
+# Configuración explícita Neo4j
 # -----------------------------
-: "${NEO4J_PUBLIC_IP:?Falta NEO4J_PUBLIC_IP (ej: 100.26.41.46)}"
-: "${NEO4J_USER:?Falta NEO4J_USER}"
-: "${NEO4J_PASSWORD:?Falta NEO4J_PASSWORD}"
-
-# Usaremos esquema bolt:// (sin TLS) y forzamos encryption=false en Spring Boot
-TARGET_URI="bolt://${NEO4J_PUBLIC_IP}:7687"
+NEO4J_URI="neo4j://174.129.47.165:7687"
+NEO4J_USER="neo4j"
+NEO4J_PASSWORD="Jorge_2004"
 
 JAVA_OPTS="\
--Dspring.neo4j.uri=${TARGET_URI} \
+-Dspring.neo4j.uri=${NEO4J_URI} \
 -Dspring.neo4j.authentication.username=${NEO4J_USER} \
 -Dspring.neo4j.authentication.password=${NEO4J_PASSWORD} \
 -Dspring.neo4j.security.encrypted=false \
 "
-
-# Si tu base no es la default (neo4j), descomenta y ajusta:
-# JAVA_OPTS="${JAVA_OPTS} -Dspring.data.neo4j.database=neo4j"
 
 # -----------------------------
 # Docker
@@ -37,65 +32,38 @@ for i in {1..10}; do
 done
 sudo usermod -aG docker ec2-user || true
 
-# AWS CLI (opcional)
-if ! command -v aws >/dev/null 2>&1; then
-  sudo yum install -y awscli
-fi
-
 CONTAINER_NAME="graph-routes-api"
 EXPOSE_PORT=8080
 sudo docker rm -f "$CONTAINER_NAME" || true
 
 # -----------------------------
-# Lanzamiento (imagen local o registry)
+# Lanzamiento
 # -----------------------------
-if [[ -n "${API_IMAGE:-}" ]]; then
-  log "📥 docker pull ${API_IMAGE}"
-  sudo docker pull "${API_IMAGE}"
+[[ -f /tmp/app.jar && -f /tmp/Dockerfile.local ]] || { echo "Faltan /tmp/app.jar o /tmp/Dockerfile.local"; exit 1; }
 
-  log "▶ docker run (registry) ${CONTAINER_NAME}"
-  sudo docker run -d \
-    --name "${CONTAINER_NAME}" \
-    --restart unless-stopped \
-    -p ${EXPOSE_PORT}:8080 \
-    -e AWS_AUTODISCOVERY_ENABLED="false" \
-    -e JAVA_TOOL_OPTIONS="${JAVA_OPTS}" \
-    -e SPRING_NEO4J_URI="${TARGET_URI}" \
-    -e SPRING_NEO4J_AUTHENTICATION_USERNAME="${NEO4J_USER}" \
-    -e SPRING_NEO4J_AUTHENTICATION_PASSWORD="${NEO4J_PASSWORD}" \
-    -e SPRING_NEO4J_SECURITY_ENCRYPTED="false" \
-    -e LOGGING_LEVEL_ORG_NEO4J_DRIVER="DEBUG" \
-    "${API_IMAGE}"
-else
-  [[ -f /tmp/app.jar && -f /tmp/Dockerfile.local ]] || { echo "Faltan /tmp/app.jar o /tmp/Dockerfile.local"; exit 1; }
+log "🏗️ docker build local (graph-routes-api:local)"
+sudo docker build -t graph-routes-api:local -f /tmp/Dockerfile.local /tmp
 
-  log "🏗️ docker build local (graph-routes-api:local)"
-  sudo docker build -t graph-routes-api:local -f /tmp/Dockerfile.local /tmp
-
-  log "▶ docker run (local build) ${CONTAINER_NAME}"
-  sudo docker run -d \
-    --name "${CONTAINER_NAME}" \
-    --restart unless-stopped \
-    -p ${EXPOSE_PORT}:8080 \
-    -e AWS_AUTODISCOVERY_ENABLED="false" \
-    -e JAVA_TOOL_OPTIONS="${JAVA_OPTS}" \
-    -e SPRING_NEO4J_URI="${TARGET_URI}" \
-    -e SPRING_NEO4J_AUTHENTICATION_USERNAME="${NEO4J_USER}" \
-    -e SPRING_NEO4J_AUTHENTICATION_PASSWORD="${NEO4J_PASSWORD}" \
-    -e SPRING_NEO4J_SECURITY_ENCRYPTED="false" \
-    -e LOGGING_LEVEL_ORG_NEO4J_DRIVER="DEBUG" \
-    graph-routes-api:local
-fi
+log "▶ docker run (local build) ${CONTAINER_NAME}"
+sudo docker run -d \
+  --name "${CONTAINER_NAME}" \
+  --restart unless-stopped \
+  -p ${EXPOSE_PORT}:8080 \
+  -e JAVA_TOOL_OPTIONS="${JAVA_OPTS}" \
+  -e SPRING_NEO4J_URI="${NEO4J_URI}" \
+  -e SPRING_NEO4J_AUTHENTICATION_USERNAME="${NEO4J_USER}" \
+  -e SPRING_NEO4J_AUTHENTICATION_PASSWORD="${NEO4J_PASSWORD}" \
+  graph-routes-api:local
 
 # Espera health
 for i in {1..20}; do
   code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:${EXPOSE_PORT}/api/health || echo "000")
-  if [[ "${code}" == "200" ]]; then echo "   ✔ API UP (200)"; break; fi
-  echo "   ⏳ Esperando API (${i}/20), status=${code}"
+  if [[ "${code}" == "200" ]]; then echo "✔ API UP (200)"; break; fi
+  echo "⏳ Esperando API (${i}/20), status=${code}"
   sleep 5
 done
 
 echo "🔎 Env dentro del contenedor (resumen):"
-sudo docker exec -i "${CONTAINER_NAME}" /bin/sh -lc 'env | grep -E "SPRING_NEO4J|JAVA_TOOL_OPTIONS" | sort || true'
+sudo docker exec -i "${CONTAINER_NAME}" /bin/sh -lc 'env | grep -E "NEO4J_|SPRING_NEO4J|JAVA_TOOL_OPTIONS" | sort || true'
 
 sudo docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
