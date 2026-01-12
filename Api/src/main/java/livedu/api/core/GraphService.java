@@ -17,10 +17,6 @@ public class GraphService {
         this.driver = driver;
     }
 
-    /**
-     * Lista de tickets disponibles entre origen y destino.
-     * Incluye aerolínea, precio, duración, embarque y si hay escala (y cuál).
-     */
     public List<Map<String, Object>> tickets(String origen, String destino, int limit) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
@@ -42,9 +38,6 @@ public class GraphService {
         return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    /**
-     * Top N tickets más baratos entre origen y destino.
-     */
     public List<Map<String, Object>> ticketsBaratos(String origen, String destino, int limit) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
@@ -63,9 +56,6 @@ public class GraphService {
         return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    /**
-     * Solo tickets directos (sin escala) entre origen y destino.
-     */
     public List<Map<String, Object>> ticketsDirectos(String origen, String destino, int limit) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
@@ -82,10 +72,6 @@ public class GraphService {
         return runQuery(query, Map.of("origen", origen, "destino", destino, "limit", limit));
     }
 
-    /**
-     * Resumen por aerolínea en la ruta: min/avg/max de precio y duración media.
-     * (No lleva embarque porque es agregación por aerolínea.)
-     */
     public List<Map<String, Object>> resumenRuta(String origen, String destino) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
@@ -101,9 +87,6 @@ public class GraphService {
         return runQuery(query, Map.of("origen", origen, "destino", destino));
     }
 
-    /**
-     * Disponibilidad de la ruta: total, directos y con escala.
-     */
     public List<Map<String, Object>> disponibilidadRuta(String origen, String destino) {
         String query = """
             MATCH (o:Aeropuerto {codigo:$origen})-[:ORIGEN]->(v:Vuelo)-[:DESTINO]->(d:Aeropuerto {codigo:$destino})
@@ -115,7 +98,6 @@ public class GraphService {
         return runQuery(query, Map.of("origen", origen, "destino", destino));
     }
 
-    // Utilidad común para lanzar lecturas Cypher y mapear a List<Map<String,Object>>
     private List<Map<String, Object>> runQuery(String query, Map<String, Object> params) {
         try (Session session = driver.session()) {
             return session.executeRead(tx -> tx.run(query, params)

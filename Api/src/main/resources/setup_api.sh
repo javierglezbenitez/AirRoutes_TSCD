@@ -3,10 +3,7 @@ set -euxo pipefail
 
 log(){ echo -e "$@"; }
 
-# -----------------------------
-# Configuración explícita Neo4j
-# -----------------------------
-NEO4J_URI="neo4j://54.242.215.23:7687"
+NEO4J_URI="neo4j://98.94.5.57:7687"
 NEO4J_USER="neo4j"
 NEO4J_PASSWORD="Jorge_2004"
 
@@ -17,9 +14,6 @@ JAVA_OPTS="\
 -Dspring.neo4j.security.encrypted=false \
 "
 
-# -----------------------------
-# Docker
-# -----------------------------
 if ! command -v docker >/dev/null 2>&1; then
   sudo yum install -y docker
   sudo systemctl enable docker
@@ -35,9 +29,6 @@ CONTAINER_NAME="graph-routes-api"
 EXPOSE_PORT=8080
 sudo docker rm -f "$CONTAINER_NAME" || true
 
-# -----------------------------
-# Lanzamiento
-# -----------------------------
 [[ -f /tmp/app.jar && -f /tmp/Dockerfile.local ]] || { echo "Faltan /tmp/app.jar o /tmp/Dockerfile.local"; exit 1; }
 
 log "🏗️ docker build local (graph-routes-api:local)"
@@ -54,7 +45,6 @@ sudo docker run -d \
   -e SPRING_NEO4J_AUTHENTICATION_PASSWORD="${NEO4J_PASSWORD}" \
   graph-routes-api:local
 
-# Espera health
 for i in {1..20}; do
   code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:${EXPOSE_PORT}/api/health || echo "000")
   if [[ "${code}" == "200" ]]; then echo "✔ API UP (200)"; break; fi

@@ -8,10 +8,7 @@ import software.amazon.awssdk.services.ec2.model.*;
 
 public class Ec2TagLocator {
 
-    /**
-     * Retorna la IP pública de la primera instancia RUNNING con tag Name=<datamartTag> en regionName.
-     * Si no encuentra, retorna null (no lanza).
-     */
+
     public static String findPublicIpByNameTag(String datamartTag, String regionName) {
         try (Ec2Client ec2 = Ec2Client.builder()
                 .region(Region.of(regionName))

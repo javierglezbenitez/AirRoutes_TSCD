@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ============================
-# Configuración
-# ============================
+
 AWS_REGION="${AWS_REGION:-us-east-1}"
 REPO_NAME="${REPO_NAME:-graph-routes-api}"
 API_INSTANCE_TAG_NAME="${API_INSTANCE_TAG_NAME:-graph-routes-api}"
 CREATE_API="${CREATE_API:-true}"
 EC2_USER="${EC2_USER:-ec2-user}"
 
-# Credenciales Neo4j (ajusta según tu servidor)
 NEO4J_USER="${NEO4J_USER:-neo4j}"
 NEO4J_PASSWORD="${NEO4J_PASSWORD:-Jorge_2004}"
-NEO4J_URI="${NEO4J_URI:-neo4j://54.242.215.23:7687}"
+NEO4J_URI="${NEO4J_URI:-neo4j://98.94.5.57:7687}"
 
 SETUP_SCRIPT_LOCAL_PATH="${SETUP_SCRIPT_LOCAL_PATH:-Api/src/main/resources/setup_api.sh}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-Api/Dockerfile}"
@@ -22,23 +19,16 @@ API_IMAGE="${API_IMAGE:-}" # Si usas Docker Hub, define aquí
 DOCKERHUB_USER="${DOCKERHUB_USER:-}"
 DOCKERHUB_TOKEN="${DOCKERHUB_TOKEN:-}"
 
-# ============================
-# Helpers
-# ============================
 log(){ printf '%b\n' "$*"; }
 fail(){ printf '❌ %s\n' "$*" >&2; exit 1; }
 req(){ command -v "$1" >/dev/null 2>&1 || fail "No se encontró '$1' en PATH."; }
 
-# ============================
-# Validaciones base
-# ============================
+
 log "🔎 Validando dependencias..."
 for c in aws docker mvn java ssh scp; do req "$c"; done
 [[ -f "$SETUP_SCRIPT_LOCAL_PATH" ]] || fail "No existe $SETUP_SCRIPT_LOCAL_PATH (setup_api.sh)."
 
-# ============================
-# Paso 1) KeyPair + .pem
-# ============================
+
 KEY_NAME="${REPO_NAME}-key"
 PEM_DIR="$HOME/.ssh"
 PEM_PATH="$PEM_DIR/${KEY_NAME}.pem"
@@ -62,16 +52,12 @@ else
   chmod 600 "$PEM_PATH" || true
 fi
 
-# ============================
-# Paso 2) Build Api + Docker (local)
-# ============================
+
 log "🧱 Compilando Api y construyendo imagen Docker local..."
 mvn -q -DskipTests -pl Api -am package || fail "Maven build falló."
 docker build -t "${REPO_NAME}:latest" -f "$DOCKERFILE_PATH" . || fail "Docker build falló."
 
-# ============================
-# Paso 3) Push a Docker Hub (OPCIONAL)
-# ============================
+
 if [[ -n "$DOCKERHUB_USER" && -n "${API_IMAGE}" ]]; then
   log "🐳 Publicando en Docker Hub → $API_IMAGE"
   if [[ -n "$DOCKERHUB_TOKEN" ]]; then
@@ -86,9 +72,7 @@ else
   log "ℹ️ Despliegue SIN registry (build en la EC2)."
 fi
 
-# ============================
-# Paso 4) Resolver/crear EC2 API
-# ============================
+
 log "🖥️ Resolviendo/creando EC2 API..."
 API_INSTANCE_ID="$(aws ec2 describe-instances \
   --filters "Name=tag:Name,Values=${API_INSTANCE_TAG_NAME}" "Name=instance-state-name,Values=running" \
@@ -138,9 +122,7 @@ log "   ▶ API IP: $API_IP"
 
 aws ec2 wait instance-status-ok --instance-ids "$API_INSTANCE_ID" --region "$AWS_REGION" || true
 
-# ============================
-# Paso 5) Copia de archivos y ejecución remota
-# ============================
+
 log "📤 Subiendo setup_api.sh..."
 scp -o StrictHostKeyChecking=no -i "$PEM_PATH" "$SETUP_SCRIPT_LOCAL_PATH" "${EC2_USER}@${API_IP}:/tmp/setup_api.sh"
 
@@ -163,9 +145,6 @@ log "💻 Ejecutando remoto setup_api.sh..."
 ssh -o StrictHostKeyChecking=no -i "$PEM_PATH" "${EC2_USER}@${API_IP}" \
   "sudo bash -lc 'export AWS_REGION=\"$AWS_REGION\"; export NEO4J_USER=\"$NEO4J_USER\"; export NEO4J_PASSWORD=\"$NEO4J_PASSWORD\"; export NEO4J_URI=\"$NEO4J_URI\"; chmod +x /tmp/setup_api.sh && /tmp/setup_api.sh'"
 
-# ============================
-# Paso 6) Verificación
-# ============================
 log "🔎 Verificando /api/health..."
 if curl -sf "http://${API_IP}:8080/api/health" >/dev/null; then
   log "✅ API UP: http://${API_IP}:8080/api/health"

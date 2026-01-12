@@ -5,7 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="Api Tests">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-gui.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/src/test/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/src/test/playwright.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/src/test/specs/gui.spec.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Api/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2TagLocator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2TagLocator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +33,8 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="Dockerfile" />
-        <option value="GitHub Workflow" />
         <option value="Class" />
+        <option value="GitHub Workflow" />
       </list>
     </option>
   </component>
@@ -100,11 +114,13 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cgsos\Documents\Cuarto\TSCD\AirRoutes\GUI\src\test" />
       <recent name="C:\Users\cgsos\Documents\Cuarto\TSCD\AirRoutes\APIAWS\localstack\ready.d" />
     </key>
   </component>
@@ -230,6 +246,8 @@
       <workItem from="1768231391634" duration="2045000" />
       <workItem from="1768241882436" duration="3979000" />
       <workItem from="1768246216253" duration="2844000" />
+      <workItem from="1768256056037" duration="2140000" />
+      <workItem from="1768259141033" duration="2809000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -375,7 +393,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768253358029</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Api Tests">
+      <option name="closed" value="true" />
+      <created>1768254414451</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1768254414451</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Api Tests">
+      <option name="closed" value="true" />
+      <created>1768254603435</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1768254603435</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -15,12 +15,6 @@ public class GraphController {
         this.graphService = graphService;
     }
 
-    // 🎯 ENDPOINTS ORIENTADOS AL USUARIO
-
-    /**
-     * Lista de tickets disponibles entre origen y destino.
-     * Incluye precio, duración, aerolínea y si hay escala.
-     */
     @GetMapping("/tickets")
     public ResponseEntity<?> tickets(
             @RequestParam(name = "origen") String origen,
@@ -29,9 +23,6 @@ public class GraphController {
         return ResponseEntity.ok(graphService.tickets(origen, destino, limit));
     }
 
-    /**
-     * Top N tickets más baratos para una ruta (origen-destino).
-     */
     @GetMapping("/tickets/baratos")
     public ResponseEntity<?> ticketsBaratos(
             @RequestParam(name = "origen") String origen,
@@ -40,9 +31,6 @@ public class GraphController {
         return ResponseEntity.ok(graphService.ticketsBaratos(origen, destino, limit));
     }
 
-    /**
-     * El ticket más barato absoluto para una ruta.
-     */
     @GetMapping("/tickets/mas-barato")
     public ResponseEntity<?> masBarato(
             @RequestParam(name = "origen") String origen,
@@ -51,9 +39,6 @@ public class GraphController {
         return ResponseEntity.ok(graphService.ticketsBaratos(origen, destino, 1));
     }
 
-    /**
-     * Solo tickets directos (sin escala) entre origen y destino.
-     */
     @GetMapping("/tickets/directos")
     public ResponseEntity<?> ticketsDirectos(
             @RequestParam(name = "origen") String origen,
@@ -62,9 +47,6 @@ public class GraphController {
         return ResponseEntity.ok(graphService.ticketsDirectos(origen, destino, limit));
     }
 
-    /**
-     * Resumen por aerolínea en la ruta (min/avg/max de precio y duración media).
-     */
     @GetMapping("/ruta/resumen")
     public ResponseEntity<?> resumenRuta(
             @RequestParam(name = "origen") String origen,
@@ -72,9 +54,6 @@ public class GraphController {
         return ResponseEntity.ok(graphService.resumenRuta(origen, destino));
     }
 
-    /**
-     * Disponibilidad de la ruta: total, directos y con escala.
-     */
     @GetMapping("/ruta/disponibilidad")
     public ResponseEntity<?> disponibilidadRuta(
             @RequestParam(name = "origen") String origen,
