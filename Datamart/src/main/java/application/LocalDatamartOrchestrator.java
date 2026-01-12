@@ -56,7 +56,7 @@ public class LocalDatamartOrchestrator {
                     throw new IllegalArgumentException("DATALAKE_MODE desconocido: " + mode + " (usa S3 o LOCAL)");
             }
         } finally {
-            resources.client().close(); // ✅ cierre ordenado también en LOCAL
+            resources.client().close();
         }
     }
 }

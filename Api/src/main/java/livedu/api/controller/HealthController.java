@@ -14,7 +14,7 @@ public class HealthController {
     @GetMapping
     public ResponseEntity<String> health() {
         try (var s = driver.session()) {
-            s.run("RETURN 1 AS ok").consume();
+            s.run("RETURN 1").consume();
             return ResponseEntity.ok("OK");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("DOWN: " + e.getMessage());

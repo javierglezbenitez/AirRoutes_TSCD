@@ -16,8 +16,8 @@ class CompositeRouteParser {
     CompositeRouteParser() {
         this.mapper = new ObjectMapper();
         this.chain = Arrays.asList(
-                new StandardJsonParser(), // primero: array/routes/objeto único
-                new NdjsonParser()        // luego: NDJSON
+                new StandardJsonParser(),
+                new NdjsonParser()
         );
     }
 

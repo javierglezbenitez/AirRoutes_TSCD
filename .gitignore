@@ -37,3 +37,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+target/
+dependency-reduced-pom.xml
+*.iml
+.idea/
+*.log
+.DS_Store

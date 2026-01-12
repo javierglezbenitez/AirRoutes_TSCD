@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- Config base de Spring Boot -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Ajustes de nivel (opcionales) -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.neo4j.driver" level="WARN"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

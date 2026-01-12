@@ -1,40 +1,61 @@
+
 package livedu.api.config;
 
-import org.neo4j.driver.AuthTokens;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.GraphDatabase;
+import livedu.api.aws.Ec2TagLocator;
+import org.neo4j.driver.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.*;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class Neo4jConfig {
 
-    @Value("${neo4j.uri}")
-    private String uri;
+    @Value("${neo4j.uri:}")            private String propUri;
+    @Value("${neo4j.user:neo4j}")      private String user;
+    @Value("${neo4j.pass:neo4j}")      private String pass;
 
-    @Value("${neo4j.user}")
-    private String user;
+    @Value("${aws.autodiscovery.enabled:true}")
+    private boolean awsAuto;
 
-    @Value("${neo4j.pass}")
-    private String pass;
+    @Value("${aws.region:us-east-1}")
+    private String awsRegion;
+
+    @Value("${aws.datamartTag:neo4j-datamart}")
+    private String datamartTag;
 
     @Bean
+    @Lazy
     public Driver neo4jDriver() {
-        return GraphDatabase.driver(uri, AuthTokens.basic(user, pass));
-    }
+        // 1) Primero: NEO4J_URI (env o application.yml)
+        String effectiveUri = (propUri != null && !propUri.isBlank())
+                ? propUri
+                : System.getenv("NEO4J_URI");
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*") // Cambia "*" por tu dominio si quieres restringir
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+        // 2) Si no vino explícita y el auto-discovery está habilitado, resuelve por tag
+        if ((effectiveUri == null || effectiveUri.isBlank()) && awsAuto) {
+            String ip = Ec2TagLocator.findPublicIpByNameTag(datamartTag, awsRegion);
+            if (ip != null && !ip.isBlank()) {
+                effectiveUri = "bolt://" + ip + ":7687";
+                System.out.println("▶ Neo4j URI (auto): " + effectiveUri + " [tag=" + datamartTag + "]");
             }
-        };
+        }
+
+        // 3) Fallback final para entornos de desarrollo
+        if (effectiveUri == null || effectiveUri.isBlank()) {
+            effectiveUri = "bolt://localhost:7687";
+            System.out.println("⚠️ Neo4j URI no resuelta; usando fallback " + effectiveUri);
+        }
+
+        // Config del driver: timeout corto y pool razonable
+        Config cfg = Config.builder()
+                .withConnectionTimeout(5, TimeUnit.SECONDS)
+                .withMaxConnectionPoolSize(20)
+                .withMaxTransactionRetryTime(5,TimeUnit.SECONDS)
+                .build();
+
+        // Importante: no ejecutar query aquí; el HealthController valida conexión
+        return GraphDatabase.driver(effectiveUri, AuthTokens.basic(user, pass), cfg);
     }
 }

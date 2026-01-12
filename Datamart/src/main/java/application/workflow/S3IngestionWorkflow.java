@@ -13,19 +13,18 @@ public final class S3IngestionWorkflow {
     public static void runForever(DatalakeReader reader, DataMartService service, long pollMs) throws InterruptedException {
         Set<String> processedKeys = new HashSet<>();
         LocalDate currentDate = LocalDate.now();
-        boolean dayCleared = false; // ✅ marca si ya hicimos clear en el día
+        boolean dayCleared = false;
         System.out.println("📡 Ingesta continua. Día actual: " + currentDate);
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 LocalDate now = LocalDate.now();
 
-                // Cambio de día: reseteo estado, pero NO borro aún
                 if (!now.equals(currentDate)) {
                     System.out.println("🔄 Cambio de día (" + currentDate + " -> " + now + "). Reseteando estado de archivos...");
                     currentDate = now;
                     processedKeys.clear();
-                    dayCleared = false; // ✅ nuevo día, todavía no borramos
+                    dayCleared = false;
                 }
 
                 List<String> keys = reader.listFilesForDate(currentDate);
@@ -46,7 +45,6 @@ public final class S3IngestionWorkflow {
                     continue;
                 }
 
-                // ✅ Reemplazo diario seguro: SOLO borro cuando tengo rutas nuevas del día
                 if (!dayCleared) {
                     System.out.println("🧽 Primer lote del día " + currentDate + ": limpiando DataMart antes de insertar...");
                     service.clearOld();  // borra TODO el grafo

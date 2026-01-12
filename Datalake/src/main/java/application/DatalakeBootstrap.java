@@ -7,19 +7,12 @@ import architecture.StorageFactory;
 
 import java.io.IOException;
 
-/**
- * Bootstrap del módulo Datalake.
- * Expone start()/stop() para que el Orchestrator controle el ciclo de vida.
- */
 public class DatalakeBootstrap {
     private Thread thread;
     private DatalakeRunner runner;
 
-    /**
-     * Arranca el generador del Datalake en un hilo propio (no bloquea).
-     */
+
     public void start() throws IOException {
-        // Configuración: igual que en tu antiguo MainDatalake
         String storageMode = System.getenv().get("DATALAKE_MODE");
 
         StorageFactory factory = new DefaultStorageFactory();
@@ -31,23 +24,17 @@ public class DatalakeBootstrap {
         int batchSize = Integer.parseInt(String.valueOf(30));
         long intervalMillis = Long.parseLong(String.valueOf(30000));
 
-        // Runner + hilo
         runner = new DatalakeRunner(generator, datalake, batchSize, intervalMillis);
         thread = new Thread(runner, "AirRoutesGenerator");
-        // Si quieres que el proceso pueda finalizar sin esperar este hilo, descomenta:
-        // thread.setDaemon(true);
         thread.start();
 
         System.out.println("✈️ [DATALAKE] Servicio AirRoutes iniciado (modo: " + storageMode + ")");
     }
 
-    /**
-     * Detiene ordenadamente el hilo del Datalake.
-     */
     public void stop() {
         if (runner != null) {
             try {
-                runner.stop();            // marca running=false en el runner
+                runner.stop();
             } catch (Exception e) {
                 System.err.println("⚠️ [DATALAKE] Error al pedir stop(): " + e.getMessage());
             }
