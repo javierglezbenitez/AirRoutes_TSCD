@@ -10,17 +10,17 @@ on:
         required: true
         type: string
       api_instance_tag_name:
-        description: "Tag Name de la instancia EC2 que ejecutará la API"
+        description: "Tag Name de la instancia EC2"
         default: "graph-routes-api"
         required: true
         type: string
       repo_name:
-        description: "Nombre lógico de la imagen/JAR (coincide con REPO_NAME)"
+        description: "Nombre lógico del despliegue (REPO_NAME)"
         default: "graph-routes-api"
         required: true
         type: string
       neo4j_uri:
-        description: "URI de Neo4j (ej: neo4j://host:7687)"
+        description: "URI Neo4j (neo4j://host:7687)"
         default: "neo4j://54.242.215.23:7687"
         required: true
         type: string
@@ -30,48 +30,72 @@ on:
         required: true
         type: string
       create_api:
-        description: "Si no existe la instancia, crearla (true/false)"
+        description: "Crear instancia si no existe"
         default: "true"
         required: true
         type: choice
-        options: ["true","false"]
+        options:
+          - "true"
+          - "false"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
-    # ⚠️ Define estos secrets/vars en Settings → Secrets and variables → Actions
     env:
       AWS_REGION: ${{ inputs.aws_region }}
       REPO_NAME: ${{ inputs.repo_name }}
       API_INSTANCE_TAG_NAME: ${{ inputs.api_instance_tag_name }}
       CREATE_API: ${{ inputs.create_api }}
-      EC2_USER: "ec2-user"
+      EC2_USER: ec2-user
 
-      # Neo4j ⇒ usado por setup_api.sh/contendor
       NEO4J_URI: ${{ inputs.neo4j_uri }}
       NEO4J_USER: ${{ inputs.neo4j_user }}
       NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
 
-      # (Opcional) despliegue con imagen de registry en vez de build local
-      API_IMAGE: ${{ vars.API_IMAGE || '' }}
+      # Si no tienes definida API_IMAGE en repo variables, quedará vacío (OK)
+      API_IMAGE: ${{ vars.API_IMAGE }}
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     steps:
+      - name: Pre-check de secrets (temporales STS)
+        shell: bash
+        env:
+          AKID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SAK: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          STOK: ${{ secrets.AWS_SESSION_TOKEN }}
+        run: |
+          set -euo pipefail
+          for v in AKID SAK STOK; do
+            if [ -z "${!v}" ]; then
+              echo "❌ Falta el secret $v (temporales STS)."
+              echo "   Ejecuta: aws sts get-session-token --duration-seconds 3600"
+              echo "   y pega AccessKeyId, SecretAccessKey y SessionToken en los secrets."
+              exit 1
+            fi
+          done
+          echo "✅ Secrets temporales presentes."
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (Temporary STS)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: "STS: who am I?"
+        run: aws sts get-caller-identity
 
       - name: Check toolchain
+        shell: bash
         run: |
+          set -euxo pipefail
           aws --version
           docker version
           docker info
@@ -83,27 +107,28 @@ jobs:
         run: mvn -B -q -DskipTests -pl Api -am package
 
       - name: Run deploy script
-        id: deploy
+        run: bash scripts/deploy_api.sh
+
+      - name: Resolve public IP
+        id: resolve_ip
+        shell: bash
         run: |
           set -euo pipefail
-          # Ejecuta tu script. Éste ya:
-          #  - crea/valida KeyPair y .pem
-          #  - crea/encuentra EC2 con tag Name=${API_INSTANCE_TAG_NAME}
-          #  - copia setup_api.sh + JAR + Dockerfile.local
-          #  - lanza el contenedor y hace health-check
-          bash scripts/deploy_api.sh
-
-          # Extra: saca la IP pública como output para que se muestre en la UI
           API_IP="$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=${API_INSTANCE_TAG_NAME}" "Name=instance-state-name,Values=running" \
             --region "${AWS_REGION}" \
             --query "Reservations[0].Instances[0].PublicIpAddress" --output text)"
-          echo "ip=${API_IP}" >> $GITHUB_OUTPUT
-          echo "API_IP=${API_IP}" >> $GITHUB_ENV
+          echo "ip=${API_IP}" >> "$GITHUB_OUTPUT"
+          echo "API_IP=${API_IP}" >> "$GITHUB_ENV"
 
-      - name: Show deployed URL
+      - name: Show deployed URL (health)
+        shell: bash
         run: |
           echo "API health: http://${API_IP}:8080/api/health"
+
+      - name: Show deployed URL (swagger)
+        shell: bash
+        run: |
           echo "OpenAPI UI: http://${API_IP}:8080/swagger-ui/index.html"
 
       - name: Upload setup script (on failure)
@@ -114,4 +139,4 @@ jobs:
           path: Api/src/main/resources/setup_api.sh
 
     outputs:
-      api_ip: ${{ steps.deploy.outputs.ip }}
+      api_ip: ${{ steps.resolve_ip.outputs.ip }}
