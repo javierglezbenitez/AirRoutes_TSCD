@@ -1,0 +1,94 @@
+
+name: CI Datamart
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - "Datamart/**"
+      - ".github/workflows/ci-datamart.yml"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    permissions:
+      contents: read
+
+    env:
+      # Testcontainers: menos chequeos en CI
+      TESTCONTAINERS_CHECKS_DISABLE: "true"
+      # Evita intentos de metadatos/credenciales reales
+      AWS_ACCESS_KEY_ID: "test"
+      AWS_SECRET_ACCESS_KEY: "test"
+      AWS_REGION: "us-east-1"
+      # Si tus IT leen esta variable para Neo4j
+      NEO4J_TEST_PWD: "testpassword"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      # Docker disponible para Testcontainers
+      - name: Check Docker availability
+        run: |
+          docker version
+          docker info
+
+      # Pre-pull de imágenes usadas por los IT (acelera bastante)
+      - name: Pre-pull images (LocalStack & Neo4j)
+        run: |
+          docker pull localstack/localstack:2.3
+          docker pull neo4j:5.18
+
+      # (Opcional) Log file para depurar si falla el build
+      - name: Maven verify (unit + IT + coverage)
+        run: |
+          mvn -B -q -pl Datamart -am clean verify | tee mvn-output.txt
+        shell: bash
+
+      - name: Upload Maven log (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-log
+          path: mvn-output.txt
+
+      # Publicar reportes JUnit (Surefire + Failsafe)
+      - name: Upload JUnit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-datamart
+          path: |
+            Datamart/target/surefire-reports/*.xml
+            Datamart/target/failsafe-reports/*.xml
+
+      # Publicar reporte JaCoCo HTML del módulo Datamart
+      - name: Upload JaCoCo coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-datamart
+          path: Datamart/target/site/jacoco/**
+
+      # (Opcional) Publicar el JAR si el build pasa
+      - name: Upload Datamart JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Datamart-jar
+          path: Datamart/target/Datamart-1.0-SNAPSHOT.jar

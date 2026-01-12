@@ -27,7 +27,7 @@ public class AppConfig {
         this.connectRetrySleepMs = 10_000L;
         this.pollIntervalMs = 40_000L;
 
-        this.datamartMode = env.get("DATAMART_MODE");
+        this.datamartMode = env.getOrDefault("DATAMART_MODE", "EC2");
 
         String bolt = env.get("NEO4J_BOLT_URI");
         if (bolt == null || bolt.isBlank()) {

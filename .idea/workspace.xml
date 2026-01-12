@@ -4,14 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="GUI Done">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="API more clean">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-datalake.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-datamart.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/DatalakeRunnerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/RouteGeneratorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/architecture/DatalakeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/LocalStorageTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/S3WebServiceIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/application/AppConfigTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/DirectoryResolverTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/FallbackDatalakeReaderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/LocalDatalakeReaderImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/S3DatalakeReaderImplIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jContainerSmokeIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jGraphRepositoryIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/service/DataMartServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/scripts/build_and_push_ecr.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/tools/EcrEnsureRepoRunner.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datalake/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +244,9 @@
       <workItem from="1768179657954" duration="1284000" />
       <workItem from="1768208772204" duration="11176000" />
       <workItem from="1768220101487" duration="3204000" />
-      <workItem from="1768231391634" duration="1940000" />
+      <workItem from="1768231391634" duration="2045000" />
+      <workItem from="1768241882436" duration="3979000" />
+      <workItem from="1768246216253" duration="2844000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -322,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768223310154</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="API more clean">
+      <option name="closed" value="true" />
+      <created>1768233423759</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1768233423760</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +375,8 @@
     <MESSAGE value="Api in aws started" />
     <MESSAGE value="Api corrected" />
     <MESSAGE value="GUI Done" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI Done" />
+    <MESSAGE value="API more clean" />
+    <option name="LAST_COMMIT_MESSAGE" value="API more clean" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
