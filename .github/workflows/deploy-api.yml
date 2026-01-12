@@ -106,8 +106,25 @@ jobs:
       - name: "Build API jar (skip tests)"
         run: mvn -B -q -DskipTests -pl Api -am package
 
+      # 👇 Verificador de layout y existencia del script en Api/scripts/
+      - name: "Verify repo layout and script path"
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "Working dir:"
+          pwd
+          echo "List root:"
+          ls -la
+          echo "List Api/:"
+          ls -la Api || true
+          echo "List Api/scripts/:"
+          ls -la Api/scripts || true
+          test -f Api/scripts/deploy_api.sh
+          chmod +x Api/scripts/deploy_api.sh
+
+      # 👇 Ejecutamos el script en su ruta real
       - name: "Run deploy script"
-        run: bash scripts/deploy_api.sh
+        run: bash Api/scripts/deploy_api.sh
 
       - name: "Resolve public IP"
         id: resolve_ip
