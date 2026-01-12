@@ -13,7 +13,7 @@ EC2_USER="${EC2_USER:-ec2-user}"
 # Credenciales Neo4j (ajusta según tu servidor)
 NEO4J_USER="${NEO4J_USER:-neo4j}"
 NEO4J_PASSWORD="${NEO4J_PASSWORD:-Jorge_2004}"
-NEO4J_URI="${NEO4J_URI:-neo4j://174.129.47.165:7687}"
+NEO4J_URI="${NEO4J_URI:-neo4j://54.242.215.23:7687}"
 
 SETUP_SCRIPT_LOCAL_PATH="${SETUP_SCRIPT_LOCAL_PATH:-Api/src/main/resources/setup_api.sh}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-Api/Dockerfile}"

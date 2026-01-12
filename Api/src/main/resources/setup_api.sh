@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 set -euxo pipefail
 
@@ -7,7 +6,7 @@ log(){ echo -e "$@"; }
 # -----------------------------
 # Configuración explícita Neo4j
 # -----------------------------
-NEO4J_URI="neo4j://174.129.47.165:7687"
+NEO4J_URI="neo4j://54.242.215.23:7687"
 NEO4J_USER="neo4j"
 NEO4J_PASSWORD="Jorge_2004"
 
