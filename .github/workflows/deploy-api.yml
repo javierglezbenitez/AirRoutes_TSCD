@@ -54,13 +54,12 @@ jobs:
       NEO4J_USER: ${{ inputs.neo4j_user }}
       NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
 
-      # Si no tienes definida API_IMAGE en repo variables, quedará vacío (OK)
       API_IMAGE: ${{ vars.API_IMAGE }}
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     steps:
-      - name: Pre-check de secrets (temporales STS)
+      - name: "Pre-check de secrets (temporales STS)"
         shell: bash
         env:
           AKID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -81,7 +80,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials (Temporary STS)
+      - name: "Configure AWS credentials (Temporary STS)"
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -92,7 +91,7 @@ jobs:
       - name: "STS: who am I?"
         run: aws sts get-caller-identity
 
-      - name: Check toolchain
+      - name: "Check toolchain"
         shell: bash
         run: |
           set -euxo pipefail
@@ -101,15 +100,16 @@ jobs:
           docker info
           mvn -v
           ssh -V
-          scp -V
+          # 'scp -V' no existe en OpenSSH; comprobamos binario
+          command -v scp >/dev/null
 
-      - name: Build API jar (skip tests)
+      - name: "Build API jar (skip tests)"
         run: mvn -B -q -DskipTests -pl Api -am package
 
-      - name: Run deploy script
+      - name: "Run deploy script"
         run: bash scripts/deploy_api.sh
 
-      - name: Resolve public IP
+      - name: "Resolve public IP"
         id: resolve_ip
         shell: bash
         run: |
@@ -121,17 +121,17 @@ jobs:
           echo "ip=${API_IP}" >> "$GITHUB_OUTPUT"
           echo "API_IP=${API_IP}" >> "$GITHUB_ENV"
 
-      - name: Show deployed URL (health)
+      - name: "Show deployed URL (health)"
         shell: bash
         run: |
           echo "API health: http://${API_IP}:8080/api/health"
 
-      - name: Show deployed URL (swagger)
+      - name: "Show deployed URL (swagger)"
         shell: bash
         run: |
           echo "OpenAPI UI: http://${API_IP}:8080/swagger-ui/index.html"
 
-      - name: Upload setup script (on failure)
+      - name: "Upload setup script (on failure)"
         if: failure()
         uses: actions/upload-artifact@v4
         with:
