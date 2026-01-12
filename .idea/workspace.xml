@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="API more clean">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-datalake.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.github/workflows/ci-datamart.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/DatalakeRunnerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/RouteGeneratorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/architecture/DatalakeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/LocalStorageTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datalake/src/test/java/storage/S3WebServiceIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/application/AppConfigTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/DirectoryResolverTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/FallbackDatalakeReaderTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/LocalDatalakeReaderImplTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/S3DatalakeReaderImplIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jContainerSmokeIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jGraphRepositoryIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datamart/src/test/java/service/DataMartServiceImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/application/AppConfig.java" afterDir="false" />
-    </list>
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="API more clean" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
