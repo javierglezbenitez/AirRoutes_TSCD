@@ -11,12 +11,12 @@ on:
         type: string
       api_instance_tag_name:
         description: "Tag Name de la instancia EC2"
-        default: "graph-routes-api"
+        default: "graph-routes-api-test"
         required: true
         type: string
       repo_name:
         description: "Nombre lógico del despliegue (REPO_NAME)"
-        default: "graph-routes-api"
+        default: "graph-routes-api-test"
         required: true
         type: string
       neo4j_uri:

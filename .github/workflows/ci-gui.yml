@@ -5,12 +5,13 @@ on:
   workflow_dispatch:
     inputs:
       api_base:
-        description: "Base URL de la API (ej: http://174.129.47.52:8080)"
+        description: "Base URL de la API (ej: http://54.158.15.130:8080)"
         default: "http://54.158.15.130:8080"
         required: true
         type: string
       gui_dir:
-        description: "Directorio donde está index.html"
+        description: "Directorio donde está index.html (ruta relativa al repo)"
+        # Ajustado a tu estructura actual:
         default: "GUI/src/main/java/frontend"
         required: true
         type: string
@@ -19,6 +20,20 @@ on:
         default: "3000"
         required: true
         type: string
+      use_mock:
+        description: "Usar mock de API en los tests (1 = sí, 0 = no)"
+        default: "1"
+        required: true
+        type: choice
+        options:
+          - "1"
+          - "0"
+
+  # (Opcional) ejecuta en cada push a la GUI
+  push:
+    paths:
+      - "GUI/**"
+      - ".github/workflows/ci-gui.yml"
 
 jobs:
   e2e:
@@ -30,6 +45,8 @@ jobs:
       GUI_DIR: ${{ inputs.gui_dir }}
       PORT: ${{ inputs.port }}
       GUI_LOCAL: http://localhost:${{ inputs.port }}/index.html
+      USE_MOCK: ${{ inputs.use_mock }}
+      CI: "true"
 
     steps:
       - name: Checkout
@@ -40,30 +57,52 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: GUI/tests/package.json
+          # Caché basado en el lockfile de los tests
+          cache-dependency-path: |
+            GUI/src/test/package-lock.json
 
-      - name: Install Playwright and browsers
-        working-directory: GUI/tests
+      - name: Install Playwright, deps and browsers
+        working-directory: GUI/src/test
         run: |
           npm ci || npm install
           npm run install:browsers
 
-      - name: Start static server
+      - name: Start static server (GUI)
         run: |
           npx -y http-server "${GUI_DIR}" -p "${PORT}" --cors --silent &
           npx -y wait-on "http://localhost:${PORT}"
 
       - name: Run Playwright tests
-        working-directory: GUI/tests
+        working-directory: GUI/src/test
         env:
           API_BASE: ${{ env.API_BASE }}
           GUI_LOCAL: ${{ env.GUI_LOCAL }}
+          USE_MOCK: ${{ env.USE_MOCK }}
         run: npx playwright test
 
-      - name: Upload Playwright report
+      - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: GUI/tests/playwright-report
+          path: GUI/src/test/playwright-report
           if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload test results (screenshots/videos/traces)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: GUI/src/test/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload downloaded PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tickets-descargados
+          path: GUI/src/test/downloads
+          if-no-files-found: ignore
+          retention-days: 7

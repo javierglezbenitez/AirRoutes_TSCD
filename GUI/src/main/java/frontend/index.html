@@ -45,7 +45,7 @@
     <!-- Formulario -->
     <div class="card">
         <div class="row">
-            <input id="origen"  placeholder="Origen (ej. MUR)" value="MUR" />
+            <input id="origen"  placeholder="Origen (ej. TFN)" value="TFN" />
             <input id="destino" placeholder="Destino (ej. SDR)" value="SDR" />
             <input id="limit"   type="number" value="20" style="width:80px;" />
         </div>
@@ -92,7 +92,9 @@
 </div>
 
 <script>
-    const BASE_URL = 'http://54.158.15.130:8080';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const BASE_URL = urlParams.get('api') || 'http://54.158.15.130:8080';
 
     const fmtEUR = n => n==null ? '—' : Number(n).toLocaleString('es-ES', { style:'currency', currency:'EUR' });
     const fmtHM  = min => (min==null || isNaN(min)) ? '—' : `${Math.floor(min/60)}h ${Math.round(min%60)}m`;
