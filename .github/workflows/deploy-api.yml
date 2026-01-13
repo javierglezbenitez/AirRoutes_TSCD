@@ -21,7 +21,7 @@ on:
         type: string
       neo4j_uri:
         description: "URI Neo4j (neo4j://host:7687)"
-        default: "neo4j://172.30.48.1:7687"
+        default: "neo4j://54.167.39.110:7687"
         required: true
         type: string
       neo4j_user:

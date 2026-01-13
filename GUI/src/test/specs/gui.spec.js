@@ -2,7 +2,7 @@
 const { test, expect } = require('@playwright/test');
 
 const GUI_LOCAL = process.env.GUI_LOCAL ?? 'http://localhost:3000/index.html';
-const API_BASE  = process.env.API_BASE  ?? 'http://184.72.83.34:8080';
+const API_BASE  = process.env.API_BASE  ?? 'http://98.93.6.34:8080';
 const USE_MOCK  = (process.env.USE_MOCK ?? '1') === '1';
 
 function extractResultsCount(text) {

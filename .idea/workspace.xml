@@ -4,56 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="GUI Test">
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="cleaned">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-api.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-api.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-datalake.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-datalake.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-datamart.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-datamart.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/ci-gui.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-gui.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Api/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/scripts/deploy_api.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2Neo4jLocator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/aws/Ec2TagLocator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/controller/GraphController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/livedu/api/core/GraphService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/resources/setup_api.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/test/java/livedu/api/controller/GraphControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/test/java/livedu/api/controller/GraphControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/src/test/java/livedu/api/controller/HealthControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/test/java/livedu/api/controller/HealthControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/DatalakeBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/main/java/application/RouteGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datalake/src/test/java/application/DatalakeRunnerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datalake/src/test/java/application/DatalakeRunnerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/aws/InstanceProvisioner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/aws/InstanceProvisioner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/DirectoryResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/DirectoryResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/FallbackDatalakeReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/FallbackDatalakeReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/LocalDatalakeReaderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/LocalDatalakeReaderImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/NdjsonParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/NdjsonParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/RouteParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/infra/StandardJsonParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/infra/StandardJsonParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/remote/RemoteExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/remote/RemoteExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/repository/GraphRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/GraphRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/repository/Neo4jGraphRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/service/DataMartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/service/DataMartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/setup/ReadinessProbe.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/ReadinessProbe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/java/setup/ScriptDeployer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/java/setup/ScriptDeployer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/main/resources/scripts/setup_neo4j.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/main/resources/scripts/setup_neo4j.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/application/AppConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/application/AppConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/infra/DirectoryResolverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/DirectoryResolverTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/infra/LocalDatalakeReaderImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/LocalDatalakeReaderImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/infra/S3DatalakeReaderImplIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/infra/S3DatalakeReaderImplIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jContainerSmokeIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jContainerSmokeIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jGraphRepositoryIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/repository/Neo4jGraphRepositoryIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datamart/src/test/java/service/DataMartServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Datamart/src/test/java/service/DataMartServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/src/test/run-e2e.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/test/run-e2e.ps1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/src/test/specs/gui.spec.js" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/test/specs/gui.spec.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orchestrator/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Orchestrator/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orchestrator/src/main/java/application/MainAirRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orchestrator/src/main/java/application/MainAirRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-api.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,50 +69,50 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Launcher.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.MainAirRoutes.executor": "Run",
-    "Application.MainDatalake.executor": "Run",
-    "Application.MainDatamart.executor": "Run",
-    "Docker.docker-compose.yml.neo4j: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "HTTP Request.generated-requests | #1.executor": "Run",
-    "HTTP Request.generated-requests | #2.executor": "Run",
-    "HTTP Request.generated-requests | #3.executor": "Run",
-    "HTTP Request.generated-requests | #4.executor": "Run",
-    "HTTP Request.generated-requests | #5.executor": "Run",
-    "HTTP Request.generated-requests | #6.executor": "Run",
-    "HTTP Request.generated-requests | #8.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SHELLCHECK.PATH": "C:\\Users\\cgsos\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe",
-    "Spring Boot.GraphRoutesApiApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/cgsos/Documents/Tercero/Big Data/JavaSearchEngine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/ApiAws/src/main/java/com/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainAirRoutes.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainDatalake.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainDatamart.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.neo4j: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #5.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #6.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #8.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SHELLCHECK.PATH&quot;: &quot;C:\\Users\\cgsos\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe&quot;,
+    &quot;Spring Boot.GraphRoutesApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/cgsos/Documents/Tercero/Big Data/JavaSearchEngine&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/cgsos/Documents/Cuarto/TSCD/AirRoutes/ApiAws/src/main/java/com/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\cgsos\Documents\Cuarto\TSCD\AirRoutes\GUI\src\test" />
@@ -304,7 +264,9 @@
       <workItem from="1768246216253" duration="2844000" />
       <workItem from="1768256056037" duration="2140000" />
       <workItem from="1768259141033" duration="8639000" />
-      <workItem from="1768295211252" duration="7283000" />
+      <workItem from="1768295211252" duration="7517000" />
+      <workItem from="1768305363475" duration="959000" />
+      <workItem from="1768309433212" duration="1098000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -530,7 +492,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768267645592</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="cleaned">
+      <option name="closed" value="true" />
+      <created>1768302737647</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1768302737648</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -565,7 +535,8 @@
     <MESSAGE value="Datalake &amp; Datamart Tests" />
     <MESSAGE value="Api Tests" />
     <MESSAGE value="GUI Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI Test" />
+    <MESSAGE value="cleaned" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

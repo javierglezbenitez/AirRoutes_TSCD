@@ -1,6 +1,6 @@
 
 param(
-  [string]$ApiBase = "http://184.72.83.34:8080",
+  [string]$ApiBase = "http://98.93.6.34:8080",
   [int]$Port = 3000,
   [string]$GuiDir = "../main/java/frontend",
   [bool]$UseMock = $true

@@ -6,7 +6,7 @@ on:
     inputs:
       api_base:
         description: "Base URL de la API (ej: http://54.158.15.130:8080)"
-        default: "http://184.72.83.34:8080"
+        default: "http://98.93.6.34:8080"
         required: true
         type: string
       gui_dir:
@@ -77,7 +77,7 @@ jobs:
         run: |
           # Defaults robustos
           PORT="${PORT:-3000}"
-          API_BASE="${API_BASE:-http://184.72.83.34:8080}"
+          API_BASE="${API_BASE:-http://98.93.6.34:8080}"
           USE_MOCK="${USE_MOCK:-1}"
           GUI_LOCAL="http://localhost:${PORT}/index.html"
 
