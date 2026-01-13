@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="Api Tests">
-      <change afterPath="$PROJECT_DIR$/GUI/src/test/run-e2e.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/deploy-api.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/main/java/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/test/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/test/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/test/playwright.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/test/playwright.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/src/test/specs/gui.spec.js" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/test/specs/gui.spec.js" afterDir="false" />
+    <list default="true" id="59b0b358-1a19-4812-a4cd-093129ec092e" name="Changes" comment="GUI Test">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-gui.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-gui.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +233,7 @@
       <workItem from="1768241882436" duration="3979000" />
       <workItem from="1768246216253" duration="2844000" />
       <workItem from="1768256056037" duration="2140000" />
-      <workItem from="1768259141033" duration="6209000" />
+      <workItem from="1768259141033" duration="6511000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -409,7 +403,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768262135174</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="GUI Test">
+      <option name="closed" value="true" />
+      <created>1768265561577</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1768265561578</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,7 +445,8 @@
     <MESSAGE value="API more clean" />
     <MESSAGE value="Datalake &amp; Datamart Tests" />
     <MESSAGE value="Api Tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Api Tests" />
+    <MESSAGE value="GUI Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI Test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
