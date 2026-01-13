@@ -49,28 +49,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Paso de diagnóstico para ver que la ruta existe en el runner
-      - name: Debug – verificar lockfile y rutas
-        run: |
-          echo "PWD: $(pwd)"
-          ls -la
-          echo "Listar GUI/src/test:"
-          ls -la GUI/src/test || true
-          echo "Buscar package-lock.json:"
-          test -f GUI/src/test/package-lock.json && echo "Encontrado GUI/src/test/package-lock.json" || (echo "NO ENCONTRADO" && exit 1)
-
       - name: Setup Node (con caché npm)
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          # <- EXACTAMENTE esta ruta (debe existir en el repo)
+          # Debe existir en el repo (ya lo tienes)
           cache-dependency-path: 'GUI/src/test/package-lock.json'
 
       - name: Install Playwright and browsers
         working-directory: GUI/src/test
         run: |
-          npm ci || npm install
+          npm ci
           npm run install:browsers
 
       - name: Start static server (GUI)
