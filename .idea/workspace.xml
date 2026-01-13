@@ -231,7 +231,7 @@
       <workItem from="1768241882436" duration="3979000" />
       <workItem from="1768246216253" duration="2844000" />
       <workItem from="1768256056037" duration="2140000" />
-      <workItem from="1768259141033" duration="7741000" />
+      <workItem from="1768259141033" duration="8285000" />
     </task>
     <task id="LOCAL-00001" summary="Datalek limpio y funcionando, datamart solo funcionado">
       <option name="closed" value="true" />
@@ -441,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768266711912</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="GUI Test">
+      <option name="closed" value="true" />
+      <created>1768267047235</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1768267047235</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -40,7 +40,6 @@ jobs:
       API_BASE: ${{ inputs.api_base }}
       GUI_DIR: ${{ inputs.gui_dir }}
       PORT: ${{ inputs.port }}
-      GUI_LOCAL: http://localhost:${{ inputs.port }}/index.html
       USE_MOCK: ${{ inputs.use_mock }}
       CI: "true"
 
@@ -61,11 +60,14 @@ jobs:
           npm ci
           npm run install:browsers
 
+
       - name: Start static server (GUI)
         shell: bash
         run: |
+          # Defaults si inputs env vienen vacías (ej. en 'push')
           GUI_DIR="${GUI_DIR:-GUI/src/main/java/frontend}"
           PORT="${PORT:-3000}"
+
           echo "Serving ${GUI_DIR} on port ${PORT}"
           npx -y http-server "${GUI_DIR}" --port "${PORT}" --cors --silent -a 127.0.0.1 &
           npx -y wait-on "http://localhost:${PORT}"
@@ -73,20 +75,21 @@ jobs:
       - name: Run Playwright tests
         shell: bash
         working-directory: GUI/src/test
-        env:
-          API_BASE: ${{ env.API_BASE }}
-          GUI_LOCAL: ${{ env.GUI_LOCAL }}
-          USE_MOCK: ${{ env.USE_MOCK }}
-          PORT: ${{ env.PORT }}
         run: |
-          API_BASE="${API_BASE:-http://54.158.15.130:8080}"
+          # Defaults robustos
           PORT="${PORT:-3000}"
+          API_BASE="${API_BASE:-http://54.158.15.130:8080}"
           USE_MOCK="${USE_MOCK:-1}"
-          GUI_LOCAL="${GUI_LOCAL:-http://localhost:${PORT}/index.html}"
+          GUI_LOCAL="http://localhost:${PORT}/index.html"
+
           echo "API_BASE=$API_BASE"
+          echo "PORT=$PORT"
           echo "GUI_LOCAL=$GUI_LOCAL"
           echo "USE_MOCK=$USE_MOCK"
-          npx playwright test
+
+          #Inyecta las variables calculadas en el entorno del proceso Playwright
+          API_BASE="$API_BASE" GUI_LOCAL="$GUI_LOCAL" USE_MOCK="$USE_MOCK" npx playwright test
+      
 
       - name: Upload Playwright HTML report
         if: always()
