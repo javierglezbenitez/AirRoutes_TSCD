@@ -11,7 +11,6 @@ on:
         type: string
       gui_dir:
         description: "Directorio donde está index.html (ruta relativa al repo)"
-        # Ajustado a tu estructura actual:
         default: "GUI/src/main/java/frontend"
         required: true
         type: string
@@ -25,11 +24,9 @@ on:
         default: "1"
         required: true
         type: choice
-        options:
-          - "1"
-          - "0"
+        options: ["1", "0"]
 
-  # (Opcional) ejecuta en cada push a la GUI
+  # Opcional: dispara cuando cambie la GUI o el propio workflow
   push:
     paths:
       - "GUI/**"
@@ -52,16 +49,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug – listar rutas relevantes
+        run: |
+          echo "PWD: $(pwd)"
+          ls -la
+          echo "GUI/src/test:"
+          ls -la GUI/src/test || true
+          echo "GUI/tests:"
+          ls -la GUI/tests || true
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          # Caché basado en el lockfile de los tests
-          cache-dependency-path: |
-            GUI/src/test/package-lock.json
+          # USAR comodín para evitar el error si cambian rutas
+          cache-dependency-path: '**/package-lock.json'
 
-      - name: Install Playwright, deps and browsers
+      - name: Install Playwright and browsers
         working-directory: GUI/src/test
         run: |
           npm ci || npm install
