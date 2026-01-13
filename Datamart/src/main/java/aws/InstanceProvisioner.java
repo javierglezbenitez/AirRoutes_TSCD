@@ -1,5 +1,3 @@
-
-// aws/InstanceProvisioner.java
 package aws;
 public interface InstanceProvisioner {
     String ensureInstance(String name) throws Exception;

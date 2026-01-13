@@ -1,9 +1,9 @@
 
 param(
-  [string]$ApiBase = "http://54.158.15.130:8080",
+  [string]$ApiBase = "http://184.72.83.34:8080",
   [int]$Port = 3000,
   [string]$GuiDir = "../main/java/frontend",
-  [bool]$UseMock = $true  # ← por defecto mock activado para que pase
+  [bool]$UseMock = $true
 )
 
 function Wait-ForPort {

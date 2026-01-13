@@ -1,10 +1,9 @@
 
-// GUI/src/test/specs/gui.spec.js
 const { test, expect } = require('@playwright/test');
 
 const GUI_LOCAL = process.env.GUI_LOCAL ?? 'http://localhost:3000/index.html';
-const API_BASE  = process.env.API_BASE  ?? 'http://54.158.15.130:8080';
-const USE_MOCK  = (process.env.USE_MOCK ?? '1') === '1'; // mock ON por defecto
+const API_BASE  = process.env.API_BASE  ?? 'http://184.72.83.34:8080';
+const USE_MOCK  = (process.env.USE_MOCK ?? '1') === '1';
 
 function extractResultsCount(text) {
     const m = String(text).match(/(\d+)/);
@@ -22,12 +21,10 @@ test.beforeEach(async ({ page }) => {
     });
 
     if (USE_MOCK) {
-        // Mock /api/health
         await page.route(`${API_BASE}/api/health`, async route => {
             await route.fulfill({ status: 200, contentType: 'text/plain', body: 'OK' });
         });
 
-        // Mock /api/graph/**
         const base = API_BASE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         await page.route(new RegExp(`${base}/api/graph/.*`), async route => {
             const body = JSON.stringify([
@@ -55,11 +52,9 @@ test('Health muestra estado cuando la API responde', async ({ page }) => {
 });
 
 async function setRutaTFN_SDR(page) {
-    // Espera a que estén en DOM
     await page.waitForSelector('#origen',  { state: 'attached', timeout: 15000 });
     await page.waitForSelector('#destino', { state: 'attached', timeout: 15000 });
 
-    // Diagnóstico del formulario y captura
     const info = await page.evaluate(() => {
         const ids = Array.from(document.querySelectorAll('input')).map(i => i.id || '(sin id)');
         return { inputs: ids, count: ids.length };
@@ -67,7 +62,6 @@ async function setRutaTFN_SDR(page) {
     console.log('[FORM] inputs:', info.inputs, 'count:', info.count);
     await page.screenshot({ path: 'debug-form.png', fullPage: true });
 
-    // Rellenar por script (no depende de "visible")
     await page.evaluate(() => {
         const set = (id, val) => {
             const el = document.getElementById(id);
@@ -89,17 +83,14 @@ test('Consulta "Todos" rellena la tabla y muestra KPIs (TFN → SDR)', async ({ 
     await setRutaTFN_SDR(page);
     await page.getByRole('button', { name: 'Todos' }).click();
 
-    // Espera a que haya filas (>0)
     const rows = page.locator('#tablaVuelos tbody tr');
     await expect
         .poll(() => rows.count(), { timeout: 20000, intervals: [200, 400, 800] })
         .toBeGreaterThan(0);
 
-    // KPIs visibles
     await expect(page.locator('#kpisVuelos')).toBeVisible({ timeout: 10000 });
     await expect(page.locator('#kpiPrecioMedio')).not.toHaveText('—', { timeout: 10000 });
 
-    // Ruta y resultados
     await expect(page.locator('#pillRuta')).toContainText('TFN → SDR');
     const pillText = await page.locator('#pillResultados').textContent();
     expect(extractResultsCount(pillText)).toBeGreaterThan(0);

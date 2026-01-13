@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class FallbackDatalakeReader implements DatalakeReader {
-    private final DatalakeReader primary;   // normalmente S3
-    private final DatalakeReader secondary; // local filesystem
+    private final DatalakeReader primary;
+    private final DatalakeReader secondary;
 
     public FallbackDatalakeReader(DatalakeReader primary, DatalakeReader secondary) {
         this.primary = Objects.requireNonNull(primary, "primary");

@@ -86,7 +86,6 @@
 
     <build>
         <plugins>
-            <!-- Unit tests (JUnit 5) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -96,7 +95,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Integration tests: ejecuta */*IT.java* -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -116,7 +114,6 @@
                 </executions>
             </plugin>
 
-            <!-- Cobertura con JaCoCo -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

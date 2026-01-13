@@ -41,8 +41,8 @@ public class DatalakeBootstrap {
         }
         if (thread != null && thread.isAlive()) {
             try {
-                thread.interrupt();       // por si está en Thread.sleep(...)
-                thread.join(5_000);       // espera hasta 5s
+                thread.interrupt();
+                thread.join(5_000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

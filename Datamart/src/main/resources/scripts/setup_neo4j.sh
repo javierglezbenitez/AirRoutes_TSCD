@@ -18,7 +18,6 @@ else
   log "   [setup] Docker ya instalado."
 fi
 
-# Esperar a que el daemon responda
 for i in {1..10}; do
   if sudo docker info >/dev/null 2>&1; then
     log "   ✔ docker info OK"
@@ -31,19 +30,16 @@ done
 log "👤 [setup] Añadiendo ec2-user al grupo docker (opcional)..."
 sudo usermod -aG docker ec2-user || true
 
-# Directorios y permisos (uid 1000 = usuario 'neo4j' dentro del contenedor)
 log "📂 [setup] Preparando /var/lib/neo4j/{data,logs} con ownership 1000:1000..."
 sudo mkdir -p /var/lib/neo4j/data /var/lib/neo4j/logs
 sudo chown -R 1000:1000 /var/lib/neo4j/data /var/lib/neo4j/logs
 
-# Imagen de Neo4j
 log "📥 [setup] Asegurando imagen neo4j:5 presente..."
 if ! sudo docker image inspect neo4j:5 >/dev/null 2>&1; then
   sudo docker pull neo4j:5
 else
   log "   [setup] Imagen neo4j:5 ya presente."
-  # Si prefieres actualizar siempre a la última 5.x, descomenta lo siguiente:
-  # sudo docker pull neo4j:5 || true
+
 fi
 
 log "🔎 [setup] Variables env: NEO4J_USER=${NEO4J_USER:-<vacío>} NEO4J_PASSWORD=${NEO4J_PASSWORD:-<vacío>} PUBLIC_IP=${PUBLIC_IP:-<vacío>}"
@@ -87,15 +83,11 @@ else
     neo4j:5)
   log "   🆔 docker run CID: ${CID}"
 
-  # Si quieres anunciar IP pública (advertised), hazlo solo si es estable (Elastic IP). Evita usar una IP efímera.
-  # Puedes establecer advertised address vía 'neo4j.conf' en /data/conf si lo necesitas.
 fi
 
-# Estado
 log "🩺 [setup] Estado de contenedores (docker ps):"
 sudo docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
 
-# Espera a que Bolt arranque
 for i in {1..12}; do
   if sudo ss -ltn | grep -q ':7687'; then
     log "   ✔ Bolt escuchando en :7687"
@@ -114,15 +106,9 @@ if [ -z "$RUNNING" ]; then
   sudo docker logs --tail=100 neo4j-datamart || true
 fi
 
-# IP pública (IMDS) — usa Elastic IP si quieres estabilidad
 PUBLIC_IP_MD=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4 || echo "${PUBLIC_IP:-localhost}")
 
 log "✅ [setup] Neo4j (arranque verificado)."
 log "🌐 HTTP:  http://${PUBLIC_IP_MD}:7474"
 log "🔌 Bolt:  bolt://${PUBLIC_IP_MD}:7687"
 
-# --------- (OPCIONAL) Rotación de contraseña si ya existe el contenedor ---------
-# Requiere conocer la contraseña actual. Si la conoces, puedes ejecutar:
-# sudo docker exec neo4j-datamart bash -lc \
-#   "cypher-shell -u ${NEO4J_USER} -p '<PASSWORD_ACTUAL>' \"ALTER USER ${NEO4J_USER} SET PASSWORD '${NEO4J_PASSWORD}'\""
-# Si NO conoces la actual y necesitas reset, hay procedimientos manuales con el archivo 'auth' en /data.

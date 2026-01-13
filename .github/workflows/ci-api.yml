@@ -19,7 +19,6 @@ jobs:
     timeout-minutes: 30
 
     env:
-      # Dummy AWS por si alguna lib los mira (tests de controller no lo usan)
       AWS_ACCESS_KEY_ID: "test"
       AWS_SECRET_ACCESS_KEY: "test"
       AWS_REGION: "us-east-1"

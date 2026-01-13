@@ -15,7 +15,6 @@ class DataMartServiceImplTest {
         GraphRepository repo = mock(GraphRepository.class);
         DataMartService svc = new DataMartServiceImpl(repo);
 
-        // 👇 Importante: obligamos a Map<String, Object>
         Map<String, Object> row = Map.<String, Object>of("codigoVuelo", "FL-1");
         var data = List.of(row);
 

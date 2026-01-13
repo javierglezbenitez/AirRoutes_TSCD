@@ -6,10 +6,8 @@
     <title>Consulta de Vuelos – DataMart Neo4j</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- jsPDF -->
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-    <!-- QRCode -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 
 
@@ -39,10 +37,8 @@
 <header><h1>Consulta de Vuelos – DataMart Neo4j</h1></header>
 <div class="container">
 
-    <!-- Estado API -->
     <div class="card"><div id="healthMsg" class="msg warn">Verificando API...</div></div>
 
-    <!-- Formulario -->
     <div class="card">
         <div class="row">
             <input id="origen"  placeholder="Origen (ej. TFN)" value="TFN" />
@@ -58,7 +54,6 @@
         <div id="searchMsg" class="msg" style="display:none;"></div>
     </div>
 
-    <!-- Tabla de vuelos -->
     <div class="card">
         <div class="row" style="justify-content:space-between; align-items:center;">
             <div>
@@ -94,7 +89,7 @@
 <script>
 
     const urlParams = new URLSearchParams(window.location.search);
-    const BASE_URL = urlParams.get('api') || 'http://54.158.15.130:8080';
+    const BASE_URL = urlParams.get('api') || 'http://98.91.25.78:8080';
 
     const fmtEUR = n => n==null ? '—' : Number(n).toLocaleString('es-ES', { style:'currency', currency:'EUR' });
     const fmtHM  = min => (min==null || isNaN(min)) ? '—' : `${Math.floor(min/60)}h ${Math.round(min%60)}m`;

@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <testcontainers.version>1.20.2</testcontainers.version>
-        <neo4j.driver.version>5.18.0</neo4j.driver.version> <!-- puedes dejar 5.14.0 si prefieres -->
+        <neo4j.driver.version>5.18.0</neo4j.driver.version>
         <mockito.version>5.11.0</mockito.version>
     </properties>
 
@@ -45,21 +45,18 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Jackson Core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.15.2</version>
         </dependency>
 
-        <!-- Jackson Databind (para mapear JSON a objetos y mapas) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version>
         </dependency>
 
-        <!-- Jackson Annotations (opcional, útil para anotaciones en POJOs) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -72,7 +69,6 @@
         </dependency>
 
 
-        <!-- Gson para parsear JSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -120,7 +116,6 @@
         </dependency>
 
 
-        <!-- (Opcional) LocalStack para probar S3DatalakeReaderImpl -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>localstack</artifactId>
@@ -136,21 +131,18 @@
             <scope>test</scope>
         </dependency>
 
-            <!-- AWS SDK EC2 -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>ec2</artifactId>
                 <version>2.25.4</version>
             </dependency>
 
-            <!-- Para credenciales -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>auth</artifactId>
                 <version>2.25.4</version>
             </dependency>
 
-            <!-- JSch para SSH -->
             <dependency>
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
@@ -166,7 +158,6 @@
 
 
     </dependencies>
-
 
     <build>
         <plugins>
@@ -199,5 +190,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

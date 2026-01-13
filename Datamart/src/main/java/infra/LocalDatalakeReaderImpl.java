@@ -15,12 +15,6 @@ public class LocalDatalakeReaderImpl implements DatalakeReader {
     private final FileKeyLister fileKeyLister = new FileKeyLister();
     private final CompositeRouteParser parser = new CompositeRouteParser();
 
-    /**
-     * @param baseDir directorio base del datalake local:
-     *                - Si apunta a la raíz o a "storage":          <base>/datalake/YYYY-MM-DD/*.json
-     *                - Si apunta a "datalake":                      <base>/YYYY-MM-DD/*.json
-     *                - Si ya apunta a una carpeta de fecha (YYYY-MM-DD): <base>/*.json
-     */
     public LocalDatalakeReaderImpl(String baseDir) {
         this.basePath = Paths.get(baseDir == null || baseDir.isBlank() ? "." : baseDir).toAbsolutePath();
         System.out.println("   📂 LocalDatalake base: " + this.basePath);

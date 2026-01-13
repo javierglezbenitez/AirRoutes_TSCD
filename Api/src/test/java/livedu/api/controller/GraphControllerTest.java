@@ -93,7 +93,6 @@ class GraphControllerTest {
 
     @Test
     void resumenRuta_returnsAggregatesList() throws Exception {
-        // GraphService.resumenRuta(...) devuelve List<Map<String,Object>>
         List<Map<String,Object>> resumen = List.of(
                 Map.of("aerolinea", "Iberia",
                         "vuelos", 3,
@@ -119,7 +118,6 @@ class GraphControllerTest {
 
     @Test
     void disponibilidadRuta_returnsAggregatesList() throws Exception {
-        // GraphService.disponibilidadRuta(...) devuelve List<Map<String,Object>>
         List<Map<String,Object>> disp = List.of(
                 Map.of("total", 10, "directos", 6, "conEscala", 4)
         );

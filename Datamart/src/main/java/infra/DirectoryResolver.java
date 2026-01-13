@@ -1,16 +1,8 @@
-
 package infra;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Resuelve la carpeta efectiva para una fecha dada (YYYY-MM-DD) a partir de distintas bases:
- * Prioridad:
- *  1) <base>/datalake/YYYY-MM-DD
- *  2) <base>/YYYY-MM-DD
- *  3) <base> (si ya es la carpeta del día y es un directorio)
- */
 class DirectoryResolver {
 
     Path resolve(Path basePath, String dateStr) {

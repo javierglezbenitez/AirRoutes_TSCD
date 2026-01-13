@@ -60,4 +60,10 @@ public class GraphController {
             @RequestParam(name = "destino") String destino) {
         return ResponseEntity.ok(graphService.disponibilidadRuta(origen, destino));
     }
+
+    @GetMapping("/isolated")
+    public ResponseEntity<?> isolated() {
+        return ResponseEntity.ok(graphService.isolatedSummary());
+    }
+
 }

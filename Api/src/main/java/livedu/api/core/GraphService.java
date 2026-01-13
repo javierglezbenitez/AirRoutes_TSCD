@@ -104,4 +104,21 @@ public class GraphService {
                     .list(record -> record.asMap()));
         }
     }
+
+
+    public Map<String, Object> isolatedSummary() {
+        String query = """
+        MATCH (n) 
+        WITH count(n) AS total
+        MATCH (m)
+        WHERE NOT (m)--()
+        RETURN total, count(m) AS isolated, count(m) > 0 AS hasIsolated
+    """;
+
+        var rows = runQuery(query, Map.of());
+        if (rows.isEmpty()) {
+            return Map.of("total", 0, "isolated", 0, "hasIsolated", false);
+        }
+        return rows.get(0);
+    }
 }

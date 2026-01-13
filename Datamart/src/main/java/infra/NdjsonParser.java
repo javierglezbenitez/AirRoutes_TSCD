@@ -38,11 +38,9 @@ class NdjsonParser implements RouteParser {
                         addedLines++;
                     }
                 } catch (Exception ignore) {
-                    // línea no JSON válida, se omite
                 }
             }
         } catch (Exception ignored) {
-            // silencioso; decision del compuesto
         }
 
         if (addedLines > 0) {

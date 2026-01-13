@@ -23,7 +23,6 @@ class StandardJsonParser implements RouteParser {
         try (InputStream is = Files.newInputStream(file, StandardOpenOption.READ)) {
             JsonNode root = mapper.readTree(is);
 
-            // Caso 1: array de rutas o { routes: [...] }
             JsonNode arr = root.isArray() ? root : root.path("routes");
             if (arr.isArray()) {
                 int before = routes.size();
@@ -35,15 +34,13 @@ class StandardJsonParser implements RouteParser {
                 return routes;
             }
 
-            // Caso 2: objeto único
             if (root.isObject() && validator.hasRouteFields(root)) {
                 routes.add(mapperUtil.map(root));
                 System.out.println("   ✔ Detectado objeto único. Parseada 1 ruta de " + file.getFileName());
                 return routes;
             }
         } catch (Exception ignored) {
-            // No imprimimos aquí; el control de logs de error se deja al lector compuesto
         }
-        return routes; // vacío si no parseó nada
+        return routes;
     }
 }

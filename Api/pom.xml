@@ -4,12 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Hereda de tu proyecto multi-módulo -->
     <parent>
         <groupId>com.example</groupId>
         <artifactId>AirRoutes</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <!-- Si el pom padre está en el directorio superior -->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -19,18 +17,15 @@
     <packaging>jar</packaging>
 
     <properties>
-        <!-- Versiones clave -->
         <java.version>17</java.version>
         <spring.boot.version>3.3.4</spring.boot.version>
         <neo4j.driver.version>5.23.0</neo4j.driver.version>
 
-        <!-- Maven/compilación -->
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <!-- Si tu padre NO es Spring Boot, importamos su BOM aquí -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -44,20 +39,17 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Web REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Driver Neo4j -->
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
             <version>${neo4j.driver.version}</version>
         </dependency>
 
-        <!-- OpenAPI/Swagger UI (opcional, útil para la entrega) -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -68,21 +60,9 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>ec2</artifactId>
-            <version>2.25.43</version> <!-- o la última estable -->
+            <version>2.25.43</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-            <!-- AWS SDK v2 ECR + STS -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>ecr</artifactId>
-                <version>2.25.60</version>
-            </dependency>
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>sts</artifactId>
@@ -100,7 +80,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
-                <!-- Excluye JUnit Vintage si no lo usas -->
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
@@ -108,21 +87,16 @@
             </exclusions>
         </dependency>
 
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
-
 
     <build>
         <plugins>
-            <!-- Spring Boot plugin: version gestionada por tu propiedad spring.boot.version -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -136,7 +110,6 @@
                 </executions>
             </plugin>
 
-            <!-- Surefire y JaCoCo: puedes dejarlos tal cual -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -163,5 +136,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

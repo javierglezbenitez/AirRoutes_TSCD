@@ -12,10 +12,9 @@ class AppConfigTest {
     @Test
     void defaultsAndPrecedence_shouldWork() {
         Map<String,String> env = new HashMap<>();
-        env.put("NEO4J_PASSWORD", "secret"); // requerido
-        env.put("NEO4J_URI", "bolt://foo:7687"); // fallback
-        env.put("NEO4J_BOLT_URI", "bolt://bar:7687"); // prioridad
-        // DATAMART_MODE ausente -> default EC2
+        env.put("NEO4J_PASSWORD", "secret");
+        env.put("NEO4J_URI", "bolt://foo:7687");
+        env.put("NEO4J_BOLT_URI", "bolt://bar:7687");
 
         AppConfig cfg = new AppConfig(env);
         assertEquals("EC2", cfg.getDatamartMode());

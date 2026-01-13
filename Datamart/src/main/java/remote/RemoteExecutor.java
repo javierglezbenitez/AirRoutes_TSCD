@@ -1,5 +1,4 @@
 
-// remote/RemoteExecutor.java
 package remote;
 import java.io.InputStream;
 public interface RemoteExecutor {

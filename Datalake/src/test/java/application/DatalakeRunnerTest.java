@@ -3,7 +3,7 @@ package application;
 import architecture.AirRoute;
 import architecture.Datalake;
 import architecture.Storage;
-import architecture.RouteGenerator;   // 👈 Import correcto
+import architecture.RouteGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import storage.LocalStorage;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;     // 👈 Para usar IntStream
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,6 @@ class DatalakeRunnerTest {
     @TempDir
     Path baseDir;
 
-    // Implementa la interfaz del paquete 'architecture'
     static class FixedGenerator implements RouteGenerator {
         private final AtomicInteger seq = new AtomicInteger(1);
 
@@ -40,7 +39,7 @@ class DatalakeRunnerTest {
     void run_shouldWriteBatchesAndStopGracefully() throws Exception {
         Storage storage = new LocalStorage(baseDir.toString());
         Datalake datalake = new Datalake(storage);
-        RouteGenerator gen = new FixedGenerator();  // 👈 Ahora coincide el tipo
+        RouteGenerator gen = new FixedGenerator();
 
         int batchSize = 5;
         long interval = 50L;
@@ -49,7 +48,6 @@ class DatalakeRunnerTest {
         Thread t = new Thread(runner, "test-runner");
         t.start();
 
-        // Espera a que al menos un ciclo se ejecute
         Thread.sleep(120);
         runner.stop();
         t.join(2000);

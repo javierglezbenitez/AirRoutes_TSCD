@@ -28,9 +28,7 @@ class Neo4jGraphRepositoryIT {
             .withEnv("NEO4J_server_memory_heap_initial__size", "256m")
             .withEnv("NEO4J_server_memory_heap_max__size", "512m")
             .withEnv("NEO4J_server_memory_pagecache_size", "128m")
-            // Expón puertos explícitos
             .withExposedPorts(7687, 7474)
-            // Espera robusta: HTTP 200 en "/"
             .waitingFor(
                     Wait.forHttp("/")
                             .forPort(7474)
@@ -38,7 +36,6 @@ class Neo4jGraphRepositoryIT {
                             .withStartupTimeout(Duration.ofMinutes(6))
             )
             .withStartupTimeout(Duration.ofMinutes(6))
-            // Log del contenedor
             .withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("neo4j-container")));
 
     static Driver driver;
@@ -46,7 +43,6 @@ class Neo4jGraphRepositoryIT {
 
     @BeforeAll
     static void setup() {
-        // Construye Bolt URL con el puerto mapeado por Testcontainers
         int boltPort = neo4j.getMappedPort(7687);
         String boltUrl = "bolt://localhost:" + boltPort;
 

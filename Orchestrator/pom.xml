@@ -19,7 +19,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>Datalake</artifactId>
@@ -31,6 +30,5 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
 
 </project>

@@ -21,7 +21,7 @@ on:
         type: string
       neo4j_uri:
         description: "URI Neo4j (neo4j://host:7687)"
-        default: "neo4j://98.94.5.57:7687"
+        default: "neo4j://172.30.48.1:7687"
         required: true
         type: string
       neo4j_user:
@@ -106,7 +106,6 @@ jobs:
       - name: "Build API jar (skip tests)"
         run: mvn -B -q -DskipTests -pl Api -am package
 
-      # 👇 Verificador de layout y existencia del script en Api/scripts/
       - name: "Verify repo layout and script path"
         shell: bash
         run: |
@@ -122,7 +121,6 @@ jobs:
           test -f Api/scripts/deploy_api.sh
           chmod +x Api/scripts/deploy_api.sh
 
-      # 👇 Ejecutamos el script en su ruta real
       - name: "Run deploy script"
         run: bash Api/scripts/deploy_api.sh
 

@@ -18,17 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-    # (Opcional) permisos mínimos
     permissions:
       contents: read
 
     env:
-      # Acelera Testcontainers en CI
       TESTCONTAINERS_CHECKS_DISABLE: "true"
-      # (Opcional) algunos runners van más finos con esto; déjalo si te da problemas de Ryuk
-      # TESTCONTAINERS_RYUK_DISABLED: "false"
 
-      # Credenciales dummy por si algún test/SDK las usa desde env (tu S3 IT usa "test"/"test")
       AWS_ACCESS_KEY_ID: "test"
       AWS_SECRET_ACCESS_KEY: "test"
       AWS_REGION: "us-east-1"
@@ -44,21 +39,17 @@ jobs:
           distribution: "temurin"
           cache: "maven"
 
-      # Verificar Docker (necesario para Testcontainers + LocalStack)
       - name: Check Docker availability
         run: |
           docker version
           docker info
 
-      # Pre-pull de la imagen usada por S3WebServiceIT (acelera la primera ejecución)
       - name: Pre-pull LocalStack image for Testcontainers
         run: docker pull localstack/localstack:2.3
 
-      # Ejecuta unitarias + integración + cobertura SOLO en el módulo Datalake
       - name: Maven verify (unit + IT + coverage)
         run: mvn -B -q -pl Datalake -am clean verify
 
-      # Publicar reportes JUnit (Surefire + Failsafe)
       - name: Upload JUnit reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -68,7 +59,6 @@ jobs:
             Datalake/target/surefire-reports/*.xml
             Datalake/target/failsafe-reports/*.xml
 
-      # Publicar reporte JaCoCo HTML del módulo Datalake
       - name: Upload JaCoCo coverage
         if: always()
         uses: actions/upload-artifact@v4
@@ -76,11 +66,9 @@ jobs:
           name: jacoco-datalake
           path: Datalake/target/site/jacoco/**
 
-      # (Opcional) Publicar el JAR si el build pasa
       - name: Upload Datalake JAR
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Datalake-jar
-          # Ajusta si tu artifactId/versión difiere
           path: Datalake/target/Datalake-1.0-SNAPSHOT.jar

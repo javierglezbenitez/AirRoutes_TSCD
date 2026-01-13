@@ -12,7 +12,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
